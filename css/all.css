@@ -5,8 +5,11 @@
     --dark-light: #525861;
     --dark-lighter: #9aa0a8;
     --main: #27AAE1;
+    --main-light: #7fc8e7;
+    --main-lighter: #c4edff;
     --main-darker: #1D3F51;
     --bgcolor: #F3F7FD;
+    --red: #f13b3b;
 }
 
 *{
