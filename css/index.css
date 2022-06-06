@@ -1,7 +1,13 @@
 body > *{
     margin: 0 auto;
 }
-
+section{
+    padding: 50px 0;
+}
+section > *{
+    margin: 0 auto;
+    max-width: 1170px;
+}
 
 .header-container{
     width: 100%;
@@ -99,7 +105,6 @@ body > *{
     z-index: 9;
     background-color: var(--bgcolor);
     width: 320px;
-    box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 16px;
     display: none;
 }
 .menu-item{
@@ -199,11 +204,7 @@ body > *{
 .container-achieve{
     position: relative;
     background-color: var(--main-lighter);
-    padding-bottom: 100px ;
-}
-.container-achieve > *{
-    margin: 0 auto;
-    max-width: 1170px;
+    padding-bottom: 200px ;
 }
 .achieve-info{
     padding-top: 50px;
@@ -248,7 +249,7 @@ body > *{
 }
 .make-appoint-btn{
     position: absolute;
-    margin-top: 30px;
+    margin-top: 60px;
     font-size: 24px;
     height: 60px;
     padding: 18px;
@@ -261,4 +262,196 @@ body > *{
 }
 .make-appoint-btn:hover{
     background-color: var(--main);
+}
+
+.section-text{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+.section-description{
+    flex-basis: 72%;
+}
+.section-title{
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 20px;
+}
+.section-info{
+    font-size: 16px;
+}
+.section-more a{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    color: var(--main);
+}
+.doctor-slider{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+.doctor-item{
+    flex: 1 1 48%;
+    display: flex;
+    column-gap: 30px;
+}
+.doctor-info{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.doctor-info.avafirst{
+    order: 3;
+}
+.doctor-rank{
+    color: var(--main);
+    font-weight: 600;
+}
+.doctor-name{
+    font-size: 24px;
+    font-weight: 600;
+}
+.doctor-detail{
+
+}
+.doctor-more{
+    color: var(--main);
+}
+.doctor-avatar{
+    height: 250px;
+}
+
+.container-service{
+    background-color: var(--main-lighter);
+}
+
+.service-show{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.service66{
+    flex: 1 1 66%;
+    padding-bottom: 66%;
+    background: url("https://younetmedia.com/wp-content/uploads/2019/07/kham-suc-khoe-tong-quat-younet-media-1.png") top center / cover no-repeat;
+}
+.service33-col{
+    flex: 1 1 33%;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+.service33{
+    flex: 1;
+    padding-bottom: 33%;
+}
+.service25{
+    flex: 1 1 25%;
+    padding-bottom: 25%;
+}
+.service50{
+    flex: 1 1 48%;
+    padding-bottom: 25%;
+}
+.service-item{
+    /* border: 5px solid var(--main-lighter); */
+    position: relative;
+}
+.service-item a{
+    display: block;
+    position: absolute;
+    color: var(--bgcolor);
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .05);
+    cursor: pointer;
+}
+.service-item a:hover{
+    background: rgba(0, 0, 0, .4);
+}
+.service-item a div{
+    width: 100%;
+    padding: 50px 0 10px;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, .2) 50%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.container-symptom > div{
+    display: flex;
+    justify-content: space-between;
+}
+.symptom{
+    flex: 1;
+}
+.diseases-form{
+    margin: 20px 0;
+}
+.diseases-form input{
+    padding: 16px;
+    width: 75%;
+    background-color: var(--main-lighter);
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.disease-search-btn{
+    font-size: 30px;
+    background: transparent;
+    color: var(--red);
+    transform: translateX(-40px) translateY(5px);
+}
+.disease-search-btn:hover{
+    color: var(--main);
+}
+.sympton-more a{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    color: var(--main);
+    margin-top: 20px;
+}
+
+.footer{
+    background: var(--bgcolor2);
+}
+.footer-info{
+    display: flex;
+    justify-content: space-between;
+}
+.footer-logo{
+    flex: 1 1 30%;
+    height: 250px;
+}
+.footer-about{
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+}
+.footer-about-title{
+    font-size: 20px;
+    font-weight:600;
+    margin-bottom: 10px;
+}
+.footer-about-item{
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+.footer-contact{
+
+}
+.footer-social{
+
+}
+.footer-social-item{
+
+}
+.footer-credit{
+
 }
