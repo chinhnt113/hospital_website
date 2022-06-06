@@ -60,3 +60,31 @@ setInterval( () => {
     }
     showCurrentPos();
 }, 7000)
+
+ScrollReveal({
+    reset: true,
+    distance: '100px',
+    duration: 1000,
+    interval: 100,
+})
+
+ScrollReveal().reveal('section', {delay: 0, origin: 'top' });
+ScrollReveal().reveal('.service66', {delay: 400, origin: 'left' });
+ScrollReveal().reveal('.service25', {delay: 400, origin: 'left' });
+ScrollReveal().reveal('.service33', {delay: 400, origin: 'right' });
+ScrollReveal().reveal('.service50', {delay: 400, origin: 'right' });
+ScrollReveal().reveal('.reward-item', {delay: 400, origin: 'bottom' });
+ScrollReveal().reveal('.footer-copyright', {delay: 400, origin: 'bottom' });
+
+const toTopBtn = document.querySelector('.to-top-btn');
+const navBar = document.querySelector('.nav-container');
+
+window.addEventListener("scroll", () => {
+    if(window.pageYOffset >= 200) {
+        toTopBtn.style.visibility = 'visible';
+        toTopBtn.style.animation = 'fadeInAnimation ease .5s';
+    } else {
+        toTopBtn.style.animation = 'fadeOutAnimation ease .7s';
+        toTopBtn.style.visibility = 'hidden';
+    }
+})
