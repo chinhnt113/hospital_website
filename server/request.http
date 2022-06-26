@@ -1,0 +1,54 @@
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "nthoan",
+    "password": "1234"
+}
+
+###
+
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "ntchinh",
+    "password": "1234"
+}
+
+###
+
+POST http://localhost:5000/api/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmI4MmEzYjE2NTdmZDYyMTI5MzRmZjQiLCJpYXQiOjE2NTYyMzY2MDN9.ZdKtEepWcHmTMbSO73Tym2IYpQ39NyY3_txC_9YIL5I
+
+{
+    "title": "hoan's post",
+    "description": "React",
+    "url": "reactjs.org",
+    "status": "LEARNED"
+}
+
+###
+
+GET http://localhost:5000/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmI2ZWIxYzYxMTk3YzM1YWM1YWUzZDciLCJpYXQiOjE2NTYyMzgwNDh9.4aLDahjmROtMsvFoEJaFoC9rF_4USKpX1EBXdLXTwLM
+
+
+###
+
+PUT http://localhost:5000/api/posts/62b826909cf1205596dcefdb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmI2ZWIxYzYxMTk3YzM1YWM1YWUzZDciLCJpYXQiOjE2NTYyMzgwNDh9.4aLDahjmROtMsvFoEJaFoC9rF_4USKpX1EBXdLXTwLM
+
+{
+    "title": "MERN",
+    "description": "Mongo Express React Node",
+    "url": "https://mongodb.com",
+    "status": "TO LEARN"
+}
+
+###
+
+DELETE http://localhost:5000/api/posts/62b826909cf1205596dcefdb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmI2ZWIxYzYxMTk3YzM1YWM1YWUzZDciLCJpYXQiOjE2NTYyMzgwNDh9.4aLDahjmROtMsvFoEJaFoC9rF_4USKpX1EBXdLXTwLM
