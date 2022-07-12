@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 body > *{
     margin: 0 auto;
 }
@@ -118,6 +120,9 @@ section > *{
     color: #fff;
     border-radius: 25px;
     margin-left: 16px;
+}
+.color-btn *{
+    color: #fff;
 }
 .color-btn:hover{
     transition: .3s ease-in;
@@ -309,6 +314,7 @@ section > *{
     margin-top: 60px;
     font-size: 24px;
     height: 60px;
+    line-height: 100%;
     padding: 18px;
     background-color: var(--red);
     /* border: 1px solid transparent; */

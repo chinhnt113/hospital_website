@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-    userId: {
+const DoctorSchema = new Schema({
+    doctorId: {
         type: String,
         required: true,
         unique: true,
     },
-    username: {
+    doctorname: {
         type: String,
         required: true,
         unique: true
@@ -24,8 +24,15 @@ const UserSchema = new Schema({
         type: Date,
         required: true
     },
-    bhytId: {
-        type: Number,
+    rank: {
+        type: String,
+        default: 'Bác sĩ'
+    },
+    desc: {
+        type: String,
+    },
+    avaImage: {
+
     },
     createdAt: {
         type: Date,
@@ -33,4 +40,4 @@ const UserSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('users', UserSchema);
+module.exports = mongoose.model('doctors', DoctorSchema);
