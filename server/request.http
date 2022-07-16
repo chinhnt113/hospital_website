@@ -2,8 +2,12 @@ POST http://localhost:5000/api/auth/register
 Content-Type: application/json
 
 {
-    "username": "nthoan",
-    "password": "1234"
+    "username": "ntchinh6",
+    "password": "1234",
+    "email": "1234@g.com",
+    "fullname": "Nguyễn Thế Chính",
+    "dob": "11/03/2000",
+    "bhytId": 1234
 }
 
 ###

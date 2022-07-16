@@ -1,6 +1,18 @@
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export const MainHeader = () => {
+  const {
+    authState: {
+      isAuthenticated,
+      user,
+    },
+    logoutUser,
+  } = useContext(AuthContext);
+
+  const logout = () => logoutUser()
+
   return (
     <div className="header-container">
       <div className="header">
@@ -19,8 +31,23 @@ export const MainHeader = () => {
         <div className="header-right">
           <button className="trans-btn">LIÊN HỆ TƯ VẤN</button>
           <button className="trans-btn">ĐẶT LỊCH KHÁM</button>
-          <button className="color-btn"><Link to="/register">ĐĂNG KÝ</Link></button>
-          <button className="trans-btn"><Link to="/login">ĐĂNG NHẬP</Link></button>
+          {!isAuthenticated ? (
+            <>
+              <button className="color-btn">
+                <Link to="/register">ĐĂNG KÝ</Link>
+              </button>
+              <button className="trans-btn">
+                <Link to="/login">ĐĂNG NHẬP</Link>
+              </button>
+            </>
+          ) : (
+            <>
+              <div>XIN CHÀO {user.username}</div>
+              <button className="trans-btn" onClick={logout}>
+                ĐĂNG XUẤT
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

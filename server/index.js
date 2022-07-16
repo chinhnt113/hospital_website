@@ -7,7 +7,6 @@ const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
 
 const connectDB = async () => {
-  console.log("into connectDB");
   try {
     await mongoose.connect(
       `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.y5pqb.mongodb.net/?retryWrites=true&w=majority`

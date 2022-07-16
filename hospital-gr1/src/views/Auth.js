@@ -1,23 +1,51 @@
-import React from 'react'
-import LoginForm from '../components/auth/LoginForm'
-import RegisterForm from '../components/auth/RegisterForm'
+import React from "react";
+import LoginForm from "../components/auth/LoginForm";
+import RegisterForm from "../components/auth/RegisterForm";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
-const Auth = ({authRoute}) => {
-    let body
+const Auth = ({ authRoute }) => {
+  const {
+    authState: { authLoading, isAuthenticated, user },
+  } = useContext(AuthContext);
 
+  let body;
+
+  if (authLoading){
     body = (
-        <>
-            {authRoute==='login' && <LoginForm />}
-            {authRoute==='register' && <RegisterForm />}
-        </>
-      )
+      <div>
+        <Spin
+          indicator={
+            <LoadingOutlined
+              style={{
+                color: 'var(--darker)',
+                fontSize: 50,
+              }}
+              spin
+            />
+          }
+        />
+      </div>
+    );
+  }
+  else if (isAuthenticated) return <Navigate to="/" replace="true"/>;
+  else
+    body = (
+      <>
+        {authRoute === "login" && <LoginForm />}
+        {authRoute === "register" && <RegisterForm />}
+      </>
+    );
 
   return (
     <div className="auth-page">
-        {/* viết giao diện sau */}
-        {body}
+      {/* viết giao diện sau */}
+      {body}
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;

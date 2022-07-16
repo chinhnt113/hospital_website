@@ -1,28 +1,37 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import AlertMessage from "../layout/AlertMessage";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
+  // contexts
   const { loginUser } = useContext(AuthContext);
 
+  // state
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
 
+  const [alert, setAlert] = useState(null);
+
   const { username, password } = loginForm;
 
-  const onChangeLoginForm = (event) =>
+  // handle user input
+  const onChangeLoginForm = (event) => {
     setLoginForm({ ...loginForm, [event.target.name]: event.target.value });
+  };
 
-  const login = async event => {
-    // event.preventDefault();
-    console.log("into login function");
+  // handle login submit
+  const login = async () => {
     try {
       const loginData = await loginUser(loginForm);
-      console.log(loginData);
+      if (!loginData.success) {
+        setAlert({ type: "error", message: loginData.message });
+        setTimeout(() => setAlert(null), 3000);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -32,63 +41,71 @@ const LoginForm = () => {
     <Form
       name="basic"
       labelCol={{
-        span: 8,
+        span: 4,
       }}
       wrapperCol={{
-        span: 16,
+        span: 4,
       }}
-      initialValues={{
-        remember: true,
-      }}
-      autoComplete="off"
+      autoComplete="on"
       onFinish={login}
+      onSubmit={(e) => e.preventDefault()}
     >
       <Form.Item
-        label="Username"
         name="username"
+        label="Username"
         rules={[
           {
             required: true,
-            message: "Please input your username!",
+            message: "Vui lòng điền tên đăng nhập!",
           },
         ]}
       >
-        <Input value={username} onChange={onChangeLoginForm} />
+        <Input value={username} name="username" onChange={onChangeLoginForm} />
       </Form.Item>
 
       <Form.Item
-        label="Password"
         name="password"
+        label="Password"
         rules={[
           {
             required: true,
-            message: "Please input your password!",
+            message: "Vui lòng điền mật khẩu!",
           },
         ]}
       >
-        <Input.Password value={password} onChange={onChangeLoginForm} />
+        <Input.Password
+          name="password"
+          value={password}
+          onChange={onChangeLoginForm}
+        />
       </Form.Item>
 
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
+      <AlertMessage info={alert} />
       <Form.Item
         wrapperCol={{
-          offset: 8,
-          span: 16,
+          offset: 4,
+          span: 4,
         }}
       >
         <Button type="primary" htmlType="submit">
-          Login
+          Đăng nhập
         </Button>
+      </Form.Item>
+
+      <Form.Item
+        wrapperCol={{
+          offset: 3,
+          span: 6,
+        }}
+      >
+        Chưa có tài khoản?{" "}
+        <Link
+          style={{ textDecoration: "underline", color: "var(--main)" }}
+          to="/register"
+        >
+          Đăng ký
+        </Link>{" "}
+        ngay
       </Form.Item>
     </Form>
   );

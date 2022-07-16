@@ -1,20 +1,27 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema = new Schema({
-    userId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
     username: {
         type: String,
-        required: true,
+        lowercase: true,
+        required: [true, "không thể để trống"],
+        match: [/^[a-zA-Z0-9]+$/, "không đúng cú pháp"],
+        index: true,
         unique: true
     },
     password: {
         type: String,
         required: true
+    },
+    email: {
+        type: String,
+        lowercase: true,
+        required: [true, "không thể để trôngs"],
+        match: [/\S+@\S+\.\S+/, "không đúng cú pháp"],
+        index: true,
+        unique: true
     },
     fullname: {
         type: String,
@@ -26,11 +33,8 @@ const UserSchema = new Schema({
     },
     bhytId: {
         type: Number,
+        default: null
     },
-    createdAt: {
-        type: Date,
-        default: Date.now()
-    }
-})
+}, {timestamps: true});
 
 module.exports = mongoose.model('users', UserSchema);
