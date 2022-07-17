@@ -53,15 +53,22 @@ const RegisterForm = () => {
     <Form
       name="basic"
       labelCol={{
-        span: 4,
+        span: 9,
       }}
       wrapperCol={{
-        span: 4,
+        span: 12,
       }}
+      labelWrap="true"
       autoComplete="off"
       onFinish={register}
       onSubmit={(e) => e.preventDefault()}
     >
+      <Form.Item
+        style={{ fontSize: "30px", fontWeight: "700", textAlign: "center" }}
+        wrapperCol={{ span: "24" }}
+      >
+        ĐĂNG KÝ
+      </Form.Item>
       <Form.Item
         name="username"
         label="Tên đăng nhập"
@@ -180,22 +187,30 @@ const RegisterForm = () => {
         <Input value={bhytId} name="bhytId" onChange={onChangeRegisterForm} />
       </Form.Item>
 
-      <AlertMessage info={alert} />
-
       <Form.Item
+        style={{ textAlign: "center" }}
         wrapperCol={{
-          offset: 4,
-          span: 4,
+          offset: 3,
+          span: 18,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <AlertMessage info={alert}/>
+      </Form.Item>
+
+      <Form.Item
+        style={{textAlign: 'center'}}
+        wrapperCol={{
+          span: 24,
+        }}
+      >
+        <Button size="large" type="primary" htmlType="submit">
           Đăng ký
         </Button>
       </Form.Item>
       <Form.Item
+        style={{textAlign: 'center'}}
         wrapperCol={{
-          offset: 3,
-          span: 6,
+          span: 24,
         }}
       >
         Đã có tài khoản? <Link style={{textDecoration: "underline", color: "var(--main)"}} to="/login">Đăng nhập</Link> ngay

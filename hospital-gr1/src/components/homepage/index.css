@@ -131,6 +131,10 @@ section > *{
     color: var(--dark);
 }
 
+.user-menu-item:hover{
+    color: var(--main);
+}
+
 .navbar{
     height: 60px;
     margin: 100px auto 0;

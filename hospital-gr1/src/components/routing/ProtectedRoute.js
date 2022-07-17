@@ -11,7 +11,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
 
   if (authLoading)
     return (
-      <div>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
         <Spin
           indicator={
             <LoadingOutlined

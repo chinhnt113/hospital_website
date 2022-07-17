@@ -42,8 +42,14 @@ const Auth = ({ authRoute }) => {
 
   return (
     <div className="auth-page">
-      {/* viết giao diện sau */}
-      {body}
+      <div className="auth-form-wrapper">
+        <div className="auth-left">
+          BKHos logo/ banner dọc
+        </div>
+        <div className="auth-right">
+          {body}
+        </div>
+      </div>
     </div>
   );
 };

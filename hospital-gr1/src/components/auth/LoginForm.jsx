@@ -41,18 +41,24 @@ const LoginForm = () => {
     <Form
       name="basic"
       labelCol={{
-        span: 4,
+        span: 9,
       }}
       wrapperCol={{
-        span: 4,
+        span: 12,
       }}
       autoComplete="on"
       onFinish={login}
       onSubmit={(e) => e.preventDefault()}
     >
       <Form.Item
+        style={{ fontSize: "30px", fontWeight: "700", textAlign: "center" }}
+        wrapperCol={{ span: "24" }}
+      >
+        ĐĂNG NHẬP
+      </Form.Item>
+      <Form.Item
         name="username"
-        label="Username"
+        label="Tên đăng nhập"
         rules={[
           {
             required: true,
@@ -65,7 +71,7 @@ const LoginForm = () => {
 
       <Form.Item
         name="password"
-        label="Password"
+        label="Mật khẩu"
         rules={[
           {
             required: true,
@@ -80,22 +86,31 @@ const LoginForm = () => {
         />
       </Form.Item>
 
-      <AlertMessage info={alert} />
       <Form.Item
+        style={{ textAlign: "center" }}
         wrapperCol={{
-          offset: 4,
-          span: 4,
+          offset: 3,
+          span: 18,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <AlertMessage info={alert}/>
+      </Form.Item>
+
+      <Form.Item
+        style={{ textAlign: "center" }}
+        wrapperCol={{
+          span: 24,
+        }}
+      >
+        <Button size="large" type="primary" htmlType="submit">
           Đăng nhập
         </Button>
       </Form.Item>
 
       <Form.Item
+        style={{ textAlign: "center" }}
         wrapperCol={{
-          offset: 3,
-          span: 6,
+          span: 24,
         }}
       >
         Chưa có tài khoản?{" "}

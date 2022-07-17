@@ -49,3 +49,27 @@ img{
 ul{
     list-style: none;
 }
+
+.auth-page{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("https://www.mayoclinic.org/~/media/3203DF05B9024023A8EC7934CF2FBE37.ashx") top center/ cover no-repeat;
+}
+.auth-form-wrapper{
+    background-color: var(--bgcolor);
+    width: 50%;
+    display: flex;
+    box-shadow: 8px 8px 8px rgba(149, 157, 165, 0.2)
+}
+
+.auth-left{
+    background: var(--main);
+    flex: 30%;
+    padding: 20px;
+}
+.auth-right{
+    padding: 20px 0; 
+    flex: 70%;
+}

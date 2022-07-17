@@ -1,17 +1,56 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Dropdown, Menu, Modal } from "antd";
+import { SettingOutlined, LogoutOutlined } from "@ant-design/icons"
 
 export const MainHeader = () => {
   const {
-    authState: {
-      isAuthenticated,
-      user,
-    },
+    authState: { isAuthenticated, user },
     logoutUser,
   } = useContext(AuthContext);
 
-  const logout = () => logoutUser()
+  const logout = () => logoutUser();
+
+  // logout popup modal
+  const [isModalVisible, setModalVisible] = useState(false);
+  const showModal = () => {
+    setModalVisible(true);
+  };
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  const handleOk = () => {
+    logout();
+  };
+
+  // user hover menu
+  const userMenuStyle = {
+    height: "100px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+  };
+
+  const userMenuItemStyle = {
+    flex: "1",
+    height: "50%",
+    backgroundColor: "transparent",
+    fontWeight: "600",
+  };
+
+  const userMenu = (
+    <Menu style={userMenuStyle}>
+      <Menu.Item className="user-menu-item" style={userMenuItemStyle}>
+        <Link to="/account"><SettingOutlined style={{marginRight:"8px", fontSize:"18px"}} /> Tài khoản</Link>
+      </Menu.Item>
+      <Menu.Item className="user-menu-item" style={userMenuItemStyle}>
+        <button style={{ backgroundColor: "transparent" }} onClick={showModal}>
+        <LogoutOutlined style={{marginRight:"8px", fontSize:"18px"}} /> Đăng xuất
+        </button>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div className="header-container">
@@ -42,10 +81,24 @@ export const MainHeader = () => {
             </>
           ) : (
             <>
-              <div>XIN CHÀO {user.username}</div>
-              <button className="trans-btn" onClick={logout}>
-                ĐĂNG XUẤT
-              </button>
+              <Dropdown overlay={userMenu}>
+                <a
+                  style={{ fontWeight: "600", marginLeft: "16px" }}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  XIN CHÀO {user.username}
+                </a>
+              </Dropdown>
+              <Modal
+                title="BẠN CÓ CHẮC MUỐN ĐĂNG XUẤT?"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="ĐĂNG XUẤT"
+                cancelText="QUAY LẠI"
+                centered
+                width={400}
+              ></Modal>
             </>
           )}
         </div>

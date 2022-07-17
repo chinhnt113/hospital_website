@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Homepage from "./views/Homepage";
 import Auth from "./views/Auth";
+import Account from "./views/Account";
 import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 
@@ -20,7 +21,7 @@ function App() {
             element={<Auth authRoute="register" />}
           />
           <Route element={<ProtectedRoute/>}>
-            <Route path="/homepage" element={<Homepage/>}/>
+            <Route path="/account" element={<Account/>}/>
           </Route>
         </Routes>
       </Router>
