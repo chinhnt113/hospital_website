@@ -23,11 +23,15 @@ const DoctorSchema = new Schema({
         type: String,
         default: 'Bác sĩ'
     },
+    workday: {
+        type: [Number],
+        default: null,
+    },
     desc: {
         type: String,
     },
     avaImage: {
-
+        type: String,
     },
     createdAt: {
         type: Date,

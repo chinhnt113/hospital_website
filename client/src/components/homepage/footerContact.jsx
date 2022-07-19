@@ -29,16 +29,16 @@ const FooterContact = () => {
           </div>
         </div>
         <div className="footer-map">
-          {/* <iframe
+          <iframe
               title="Google Map"
               src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3724.679196887308!2d105.8415803166049!3d21.005492866886645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1654514039190!5m2!1sen!2s"
               width="100%"
               height="500"
-              style="border: 0"
+              style={{border: 0}}
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-            ></iframe> */}
+            ></iframe>
         </div>
       </div>
     </section>

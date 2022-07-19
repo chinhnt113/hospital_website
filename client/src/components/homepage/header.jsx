@@ -26,6 +26,7 @@ export const MainHeader = () => {
 
   // user hover menu
   const userMenuStyle = {
+    marginTop: "20px",
     height: "100px",
     display: "flex",
     flexDirection: "column",
@@ -41,10 +42,10 @@ export const MainHeader = () => {
 
   const userMenu = (
     <Menu style={userMenuStyle}>
-      <Menu.Item className="user-menu-item" style={userMenuItemStyle}>
+      <Menu.Item className="user-menu-item" style={userMenuItemStyle} key="1">
         <Link to="/account"><SettingOutlined style={{marginRight:"8px", fontSize:"18px"}} /> Tài khoản</Link>
       </Menu.Item>
-      <Menu.Item className="user-menu-item" style={userMenuItemStyle}>
+      <Menu.Item className="user-menu-item" style={userMenuItemStyle} key="2">
         <button style={{ backgroundColor: "transparent" }} onClick={showModal}>
         <LogoutOutlined style={{marginRight:"8px", fontSize:"18px"}} /> Đăng xuất
         </button>
@@ -82,12 +83,12 @@ export const MainHeader = () => {
           ) : (
             <>
               <Dropdown overlay={userMenu}>
-                <a
+                <Link to="/account" className="" type="text"
                   style={{ fontWeight: "600", marginLeft: "16px" }}
                   onClick={(e) => e.preventDefault()}
                 >
                   XIN CHÀO {user.username}
-                </a>
+                </Link>
               </Dropdown>
               <Modal
                 title="BẠN CÓ CHẮC MUỐN ĐĂNG XUẤT?"

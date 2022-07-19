@@ -1,9 +1,10 @@
-import { Button, DatePicker, Form, Input, InputNumber } from "antd";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import AlertMessage from "../layout/AlertMessage";
 import locale from "antd/es/date-picker/locale/vi_VN";
 import { Link } from "react-router-dom";
+const {Option} = Select;
 
 const RegisterForm = () => {
   // Context
@@ -15,28 +16,40 @@ const RegisterForm = () => {
     password: "",
     email: "",
     fullname: "",
+    gender: "",
     dob: "",
     bhytId: null,
   });
 
   const [alert, setAlert] = useState(null);
 
-  const { username, password, email, fullname, dob, bhytId } = registerForm;
+  const { username, password, email, fullname, gender, dob, bhytId } =
+    registerForm;
 
   //handle user input
-  const onChangeRegisterForm = (event) =>
+  const onChangeRegisterForm = (event) => {
     setRegisterForm({
       ...registerForm,
       [event.target.name]: event.target.value,
     });
+    console.log(registerForm);
+  };
 
-  const onSelectDateForm = (value, dateStr) => {
+  const onSelectDateForm = (dateStr) => {
     setRegisterForm({
       ...registerForm,
       dob: dateStr,
     });
     console.log(registerForm);
   };
+
+  const onSelectGenderForm = (value) => {
+    setRegisterForm({
+      ...registerForm,
+      gender: value,
+    });
+  };
+
   const register = async () => {
     try {
       const registerData = await registerUser(registerForm);
@@ -124,26 +137,8 @@ const RegisterForm = () => {
       >
         <Input.Password
           name="confirmPassword"
-          // value={confirmPassword}
           onChange={onChangeRegisterForm}
         />
-      </Form.Item>
-
-      <Form.Item
-        name="email"
-        label="Email"
-        rules={[
-          {
-            type: "email",
-            message: "Vui lòng nhập đúng địa chỉ email",
-          },
-          {
-            required: true,
-            message: "Vui lòng nhập email",
-          },
-        ]}
-      >
-        <Input name="email" value={email} onChange={onChangeRegisterForm} />
       </Form.Item>
 
       <Form.Item
@@ -161,6 +156,26 @@ const RegisterForm = () => {
           name="fullname"
           onChange={onChangeRegisterForm}
         />
+      </Form.Item>
+
+      <Form.Item
+        name="gender"
+        label="Giới tính"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng chọn giới tính",
+          },
+        ]}
+      >
+        <Select name="gender" value={gender} onChange={onSelectGenderForm}>
+          <Option name="gender" value="male">
+            Nam
+          </Option>
+          <Option name="gender" value="female">
+            Nữ
+          </Option>
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -183,6 +198,23 @@ const RegisterForm = () => {
         />
       </Form.Item>
 
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[
+          {
+            type: "email",
+            message: "Vui lòng nhập đúng địa chỉ email",
+          },
+          {
+            required: true,
+            message: "Vui lòng nhập email",
+          },
+        ]}
+      >
+        <Input name="email" value={email} onChange={onChangeRegisterForm} />
+      </Form.Item>
+
       <Form.Item name="bhytId" label="Số thẻ BHYT">
         <Input value={bhytId} name="bhytId" onChange={onChangeRegisterForm} />
       </Form.Item>
@@ -194,11 +226,11 @@ const RegisterForm = () => {
           span: 18,
         }}
       >
-        <AlertMessage info={alert}/>
+        <AlertMessage info={alert} />
       </Form.Item>
 
       <Form.Item
-        style={{textAlign: 'center'}}
+        style={{ textAlign: "center" }}
         wrapperCol={{
           span: 24,
         }}
@@ -208,12 +240,19 @@ const RegisterForm = () => {
         </Button>
       </Form.Item>
       <Form.Item
-        style={{textAlign: 'center'}}
+        style={{ textAlign: "center" }}
         wrapperCol={{
           span: 24,
         }}
       >
-        Đã có tài khoản? <Link style={{textDecoration: "underline", color: "var(--main)"}} to="/login">Đăng nhập</Link> ngay
+        Đã có tài khoản?{" "}
+        <Link
+          style={{ textDecoration: "underline", color: "var(--main)" }}
+          to="/login"
+        >
+          Đăng nhập
+        </Link>{" "}
+        ngay
       </Form.Item>
     </Form>
   );

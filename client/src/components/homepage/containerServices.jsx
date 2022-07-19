@@ -1,4 +1,5 @@
 import { ForwardOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom'
 
 const ContainerServices = () => {
     return (
@@ -13,33 +14,33 @@ const ContainerServices = () => {
             </div>
           </div>
           <div className="section-more">
-            <a href="#">
+            <Link to="/">
               <i className="fa-solid fa-bed-pulse"></i>
               XEM TẤT CẢ DỊCH VỤ
               <ForwardOutlined style={{fontSize:"24px"}} />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="service-show">
           <div className="service-item service66">
-            <a href="#"><div>KHÁM SỨC KHỎE TỔNG QUÁT</div></a>
+            <Link to="/"><div>KHÁM SỨC KHỎE TỔNG QUÁT</div></Link>
           </div>
           <div className="service33-col">
             <div className="service-item service33">
-              <a href="#"><div>TẦM SOÁT UNG THƯ</div> </a>
+              <Link to="/"><div>TẦM SOÁT UNG THƯ</div> </Link>
             </div>
             <div className="service-item service33">
-              <a href="#"><div>CÔNG NGHỆ TẾ BÀO GỐC</div> </a>
+              <Link to="/"><div>CÔNG NGHỆ TẾ BÀO GỐC</div> </Link>
             </div>
           </div>
           <div className="service-item service25">
-            <a href="#"><div>TIÊM VACXIN</div> </a>
+            <Link to="/"><div>TIÊM VACXIN</div> </Link>
           </div>
           <div className="service-item service25">
-            <a href="#"><div>KHÁM HẬU COVID</div> </a>
+            <Link to="/"><div>KHÁM HẬU COVID</div> </Link>
           </div>
           <div className="service-item service50">
-            <a href="#"><div>THAI SẢN TRỌN GÓI</div> </a>
+            <Link to="/"><div>THAI SẢN TRỌN GÓI</div> </Link>
           </div>
         </div>
       </section>

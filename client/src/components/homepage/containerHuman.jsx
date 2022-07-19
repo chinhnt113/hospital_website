@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const ContainerHuman = () => {
   const doctors = [
     {
@@ -48,11 +50,11 @@ const ContainerHuman = () => {
           </div>
         </div>
         <div className="section-more">
-          <a href="#">
+          <Link to="/">
             <i className="fa-solid fa-user-doctor"></i>
             XEM TẤT CẢ BÁC SĨ
             <i className="fa-solid fa-arrow-right-long"></i>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="doctor-slider">
@@ -64,9 +66,9 @@ const ContainerHuman = () => {
                 <div className="doctor-name">{item.fullname}</div>
                 <div className="doctor-detail">{item.desc}
                 </div>
-                <a href="#" className="doctor-more">
+                <Link to="/" className="doctor-more">
                   Xem thêm
-                </a>
+                </Link>
               </div>
               <div className="doctor-avatar">
                 <img src={item.avaUrl} alt={item.fullname}/>

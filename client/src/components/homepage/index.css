@@ -121,11 +121,18 @@ section > *{
     border-radius: 25px;
     margin-left: 16px;
 }
+.color-btn *{
+    color: #fff;
+}
 .color-btn:hover{
     transition: .3s ease-in;
     background-color: transparent;
     border: 1px solid var(--main);
     color: var(--dark);
+}
+
+.user-menu-item:hover{
+    color: var(--main);
 }
 
 .navbar{
@@ -143,7 +150,7 @@ section > *{
     height: 100%;
     cursor: pointer;
     flex: 1;
-    padding: 20px 0;
+    padding: 22px 0 16px;
     display: flex;
     justify-content: center;
     align-items: center;

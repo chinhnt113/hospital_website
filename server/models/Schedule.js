@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ScheduleSchema = new Schema({
-    doctorId: {
-        type: String,
+    doctorname: {
+        type: Schema.Types.ObjectId,
         required: true,
-        unique: true
+        ref: "doctors"
     },
-    userId: {
-        type: String,
+    username: {
+        type: Schema.Types.ObjectId,
         required: true,
-        unique: true
+        ref: "users"
     },
     dayOfExam: {
         type: Date,
         required: true
     },
-    timeOfExam: {
-        type: Date,
+    timeSlot: {
+        type: Number,
         required: true
     }
-})
+}, {timestamps: true});
 
 module.exports = mongoose.model('schedule', ScheduleSchema);

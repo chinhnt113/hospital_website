@@ -15,11 +15,11 @@ router.get("/", verifyToken, async (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "Không tìm thấy người dùng" });
     res.json({ success: true, user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Lỗi server" });
   }
 });
 
@@ -27,13 +27,13 @@ router.get("/", verifyToken, async (req, res) => {
 // @desc Register a user
 // @access public
 router.post("/register", async (req, res) => {
-  const { username, password, email, fullname, dob, bhytId } = req.body;
+  const { username, password, email, fullname, gender, dob, bhytId } = req.body;
 
   //validate
-  if (!username || !password)
+  if (!username || !password || !email || !fullname || !dob)
     return res
       .status(400)
-      .json({ success: false, message: "Missing username or password" });
+      .json({ success: false, message: "Vui lòng điền đầy đủ thông tin vào các trường" });
 
   try {
     //check existing user
@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
     if (user)
       return res
         .status(400)
-        .json({ success: false, message: "Username already exists" });
+        .json({ success: false, message: "Tên đăng nhập đã tồn tại" });
 
     //All good, create
     const hashedPassword = await argon2.hash(password);
@@ -51,6 +51,7 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       email,
       fullname,
+      gender,
       dob,
       bhytId,
     });
@@ -70,7 +71,7 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Lỗi server" });
   }
 });
 
@@ -84,7 +85,7 @@ router.post("/login", async (req, res) => {
   if (!username || !password)
     return res
       .status(400)
-      .json({ success: false, message: "Missing username or password" });
+      .json({ success: false, message: "Vui lòng điền đầy đủ thông tin vào các trường" });
 
   try {
     //check existing user
@@ -92,14 +93,14 @@ router.post("/login", async (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ success: false, message: "Username or password is incorrect" });
+        .json({ success: false, message: "Tên đăng nhập hoặc mật khẩu không đúng" });
 
     //Username found
     const passwordValid = await argon2.verify(user.password, password);
     if (!passwordValid)
       return res
         .status(400)
-        .json({ success: false, message: "Username or password is incorrect" });
+        .json({ success: false, message: "Tên đăng nhập hoặc mật khẩu không đúng" });
 
     // All good, return token
     const accessToken = jwt.sign(
@@ -110,7 +111,7 @@ router.post("/login", async (req, res) => {
     res.json({ success: true, message: "Login successfully", accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Lỗi server" });
   }
 });
 
