@@ -32,7 +32,6 @@ const RegisterForm = () => {
       ...registerForm,
       [event.target.name]: event.target.value,
     });
-    console.log(registerForm);
   };
 
   const onSelectDateForm = (dateStr) => {
@@ -40,7 +39,6 @@ const RegisterForm = () => {
       ...registerForm,
       dob: dateStr,
     });
-    console.log(registerForm);
   };
 
   const onSelectGenderForm = (value) => {

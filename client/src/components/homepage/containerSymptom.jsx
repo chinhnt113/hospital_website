@@ -2,42 +2,42 @@ import { Link } from "react-router-dom";
 
 const ContainerSymptom = () => {
   return (
-    <section class="container-symptom">
+    <section className="container-symptom">
       <div>
-        <div class="symptom">
-          <div class="section-title">TÌM KIẾM CÁC LOẠI BỆNH</div>
-          <div class="section-info">
+        <div className="symptom">
+          <div className="section-title">TÌM KIẾM CÁC LOẠI BỆNH</div>
+          <div className="section-info">
             Tìm kiếm thông tin về bệnh hoặc tình trạng bệnh tật.
           </div>
-          <form class="diseases-form" action="">
+          <form className="diseases-form" action="">
             <input
               type="text"
               name=""
               id="disease-search"
               placeholder="Tìm kiếm bệnh..."
             />
-            <button class="disease-search-btn">
-              <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+            <button className="disease-search-btn">
+              <i className="fa-solid fa-magnifying-glass-arrow-right"></i>
             </button>
           </form>
-          <div class="sympton-more">
+          <div className="sympton-more">
             <Link to="/">
-              <i class="fa-solid fa-disease"></i>
+              <i className="fa-solid fa-disease"></i>
               XEM TẤT CẢ CÁC BỆNH
-              <i class="fa-solid fa-arrow-right-long"></i>
+              <i className="fa-solid fa-arrow-right-long"></i>
             </Link>
           </div>
         </div>
-        <div class="symptom">
-          <div class="section-title">TRA CỨU TRIỆU CHỨNG</div>
-          <div class="section-info">
+        <div className="symptom">
+          <div className="section-title">TRA CỨU TRIỆU CHỨNG</div>
+          <div className="section-info">
             Tra cứu triệu chứng của bạn để dự đoán các khả năng bệnh.
           </div>
-          <div class="sympton-more">
+          <div className="sympton-more">
             <Link to="/">
-              <i class="fa-solid fa-disease"></i>
+              <i className="fa-solid fa-disease"></i>
               TRA CỨU TRIỆU CHỨNG
-              <i class="fa-solid fa-arrow-right-long"></i>
+              <i className="fa-solid fa-arrow-right-long"></i>
             </Link>
           </div>
         </div>

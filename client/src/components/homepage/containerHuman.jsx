@@ -58,9 +58,9 @@ const ContainerHuman = () => {
         </div>
       </div>
       <div className="doctor-slider">
-        {doctors.map((item) => {
+        {doctors.map((item, index) => {
           return (
-            <div className="doctor-item">
+            <div className="doctor-item" key={index}>
               <div className="doctor-info">
                 <div className="doctor-rank">{item.rank}</div>
                 <div className="doctor-name">{item.fullname}</div>
