@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useState } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "./constants";
 import axios from "axios";
@@ -50,7 +50,6 @@ const AuthContextProvider = ({ children }) => {
           LOCAL_STORAGE_TOKEN_NAME,
           response.data.accessToken
         );
-        
       }
 
       await loadUser();

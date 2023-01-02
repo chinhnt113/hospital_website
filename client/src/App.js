@@ -15,13 +15,9 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Homepage />} />
           <Route exact path="/login" element={<Auth authRoute="login" />} />
-          <Route
-            exact
-            path="/register"
-            element={<Auth authRoute="register" />}
-          />
-          <Route element={<ProtectedRoute/>}>
-            <Route path="/account" element={<Account/>}/>
+          <Route exact path="/register" element={<Auth authRoute="register" />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/account" element={<Account />} />
           </Route>
         </Routes>
       </Router>

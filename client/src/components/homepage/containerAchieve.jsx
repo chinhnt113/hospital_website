@@ -1,3 +1,5 @@
+import BookingModal from "./bookingModal";
+
 const ContainerAchieve = () => {
     return (
         <section className="container-achieve">
@@ -33,7 +35,7 @@ const ContainerAchieve = () => {
             </div>
           </div>
         </div>
-        <button className="make-appoint-btn">ĐĂNG KÝ KHÁM NGAY</button>
+        <BookingModal />
       </section>
     )
 }

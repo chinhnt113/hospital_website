@@ -19,7 +19,7 @@ router.get("/", verifyToken, async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Lỗi server" });
+    res.status(500).json({ success: false, message: "Something wrong" });
   }
 });
 
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
   if (!username || !password || !email || !fullname || !dob)
     return res
       .status(400)
-      .json({ success: false, message: "Vui lòng điền đầy đủ thông tin vào các trường" });
+      .json({ success: false, message: "Please fill in all required fields" });
 
   try {
     //check existing user
@@ -71,7 +71,7 @@ router.post("/register", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Lỗi server" });
+    res.status(500).json({ success: false, message: "Something wrong" });
   }
 });
 
@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
   if (!username || !password)
     return res
       .status(400)
-      .json({ success: false, message: "Vui lòng điền đầy đủ thông tin vào các trường" });
+      .json({ success: false, message: "Please fill in all required fields" });
 
   try {
     //check existing user
@@ -111,7 +111,7 @@ router.post("/login", async (req, res) => {
     res.json({ success: true, message: "Login successfully", accessToken });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Lỗi server" });
+    res.status(500).json({ success: false, message: "Something wrong" });
   }
 });
 
