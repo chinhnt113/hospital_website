@@ -75,6 +75,7 @@ section > *{
 .header-left{
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .header-logo{
     height: 80%;

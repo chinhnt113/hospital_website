@@ -1,0 +1,49 @@
+section {
+  background: #fff;
+}
+.post {
+  display: flex;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--main-light);
+}
+.head-post {
+  .post-image {
+    margin-bottom: 32px;
+    img {
+      max-width: 100%;
+      max-height:100%;
+    }
+  }
+  .post-content{
+    margin-left: 32px;
+    width: 45%;
+  }
+}
+.non-head-post {
+  .post-image {
+    width: 30%;
+    margin-bottom: 32px;
+    img {
+      max-width:100%;
+      max-height:100%;
+    }
+  }
+  .post-content{
+    margin-left: 32px;
+    width: 65%;
+  }
+}
+.post-content {
+  margin-left: 16px;
+  margin-bottom: 32px;
+  .post-snippet {
+    margin-top: 8px;
+  }
+  .post-title {
+    margin-bottom: 16px;
+    &:hover {
+      color: var(--main);
+      cursor: pointer;
+    }
+  }
+}

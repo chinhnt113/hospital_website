@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Dropdown, Menu, Modal } from "antd";
 import { SettingOutlined, LogoutOutlined } from "@ant-design/icons"
 
 export const MainHeader = () => {
+  const navigate = useNavigate();
   const {
     authState: { isAuthenticated, user },
     logoutUser,
@@ -56,7 +57,7 @@ export const MainHeader = () => {
   return (
     <div className="header-container">
       <div className="header">
-        <div className="header-left">
+        <div className="header-left" onClick={() => {navigate("/")}}>
           <div className="header-logo">
             <img src={require("../../assets/logo.png")} alt="logo" />
           </div>

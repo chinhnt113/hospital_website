@@ -1,21 +1,17 @@
 import React from "react";
 
-import { MainHeader } from "../components/homepage/header";
-import { MainNavbar } from "../components/homepage/navbar";
 import MainCarousel from "../components/homepage/slider";
 import ContainerAchieve from "../components/homepage/containerAchieve";
 import ContainerHuman from "../components/homepage/containerHuman";
 import ContainerServices from "../components/homepage/containerServices";
 import ContainerSymptom from "../components/homepage/containerSymptom";
-import FooterContact from "../components/homepage/footerContact";
-import FooterInfo from "../components/homepage/footerInfo";
-import FooterCopyright from "../components/homepage/footerCopyright";
+import Footer from "../components/footer";
+import Header from "../components/header";
 
 const Homepage = () => {
   return (
     <div className="App">
-      <MainHeader />
-      <MainNavbar />
+      <Header />
       <MainCarousel className="main-carousel" />
       <div className="container">
         <ContainerAchieve />
@@ -23,11 +19,7 @@ const Homepage = () => {
         <ContainerServices className="container-services" />
         <ContainerSymptom className="container-symptom" />
       </div>
-      <div className="footer">
-        <FooterInfo />
-        <FooterContact />
-        <FooterCopyright />
-      </div>
+      <Footer />
     </div>
   );
 };

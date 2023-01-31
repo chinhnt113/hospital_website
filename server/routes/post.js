@@ -8,7 +8,7 @@ const Post = require("../models/Post");
 // @desc Create post
 // @access Private
 router.post("/", verifyToken, async (req, res) => {
-  const { title, description, url, status } = req.body;
+  const { title, image, snippet, content, majority } = req.body;
 
   //simple validation
   if (!title)
@@ -19,15 +19,15 @@ router.post("/", verifyToken, async (req, res) => {
   try {
     const newPost = new Post({
       title,
-      description,
-      url: url.startsWith("https://") ? url : `https://${url}`,
-      status: status || "TO LEARN",
-      user: req.userId,
+      image,
+      snippet,
+      content,
+      majority,
     });
 
     await newPost.save();
 
-    res.json({ success: true, message: "Happy learning!", post: newPost });
+    res.json({ success: true, message: "Post success!", post: newPost });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -36,12 +36,28 @@ router.post("/", verifyToken, async (req, res) => {
 
 // @route GET api/posts
 // @desc Read post
-// @access Private
-router.get("/", verifyToken, async (req, res) => {
+// @access Public
+// router.get("/", async (req, res) => {
+//   try {
+//     const posts = await Post.find({ user: req.userId }).populate("user", [
+//       "username",
+//     ]);
+//     res.json({ success: true, posts });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// });
+
+router.get("/", async (req, res) => {
+  let perPage = 10;
+  let page = req.query.page || 1;
+  const { majority } = req.query;
   try {
-    const posts = await Post.find({ user: req.userId }).populate("user", [
-      "username",
-    ]);
+    const posts = await Post
+      .find({ majority: majority })
+      .skip((perPage * page) - perPage)
+      .limit(perPage)
     res.json({ success: true, posts });
   } catch (error) {
     console.log(error);

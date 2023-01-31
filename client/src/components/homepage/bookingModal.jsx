@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Select } from "antd";
+import { Button, Modal, Form, Input, Select, Radio } from "antd";
 import { AuthContext } from "../../contexts/AuthContext";
+import { getAllDoctors } from "../../action/doctorActions";
+import useFetch from "../../hooks/useFetch";
 
 const BookingModal = () => {
   const {
     authState: { isAuthenticated, user },
   } = useContext(AuthContext);
+  const today = new Date();
   const [form] = Form.useForm();
 
   const [typeSelector, setTypeSelector] = useState("doc");
@@ -15,34 +18,42 @@ const BookingModal = () => {
   const [openTimeModal, setOpenTimeModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(false);
 
+  const [majority, setMajority] = useState('');
+
   const [doctorList, setDoctorList] = useState([]);
+  
+  const { data, loading, error } = useFetch(`/doctors/${majority}`);
 
   useEffect(() => {
-    setDoctorList([
-      { name: "1", id: "1", major: "1" },
-      { name: "2", id: "2", major: "2" },
-      { name: "3", id: "3", major: "3" },
-    ]);
-  }, [form.getFieldValue("major")]);
+    const newList =
+      data?.doctors?.map((doctor) => {
+        return {
+          name: doctor.fullname,
+          id: doctor._id,
+          majority: doctor.majority,
+        };
+      }) || [];
+    setDoctorList(newList);
+  }, [data]);
 
   const showModal = () => {
-    // if (!isAuthenticated) {
-    //   setOpenLoginModal(true);
-    // } else {
-    setOpenSelectTypeModal(true);
-    // }
+    if (isAuthenticated) {
+      setOpenLoginModal(true);
+    } else {
+      setOpenSelectTypeModal(true);
+    }
   };
 
   const handleOkLoginModal = () => {
     window.open("/login");
     setOpenLoginModal(false);
   };
-  const handleOkSelectTypeModal = () => {
-    setOpenSelectTypeModal(false);
-  };
-  const handleOkDoctorModal = () => {
-    setOpenDoctorModal(false);
-  };
+  // const handleOkSelectTypeModal = () => {
+  //   setOpenSelectTypeModal(false);
+  // };
+  // const handleOkDoctorModal = () => {
+  //   setOpenDoctorModal(false);
+  // };
 
   const handleCancel = () => {
     setOpenLoginModal(false);
@@ -52,12 +63,31 @@ const BookingModal = () => {
     setOpenInfoModal(false);
   };
 
-  const onChangeMajor = (value) => {
-    form.setFieldsValue({ major: value });
+  const onChangeMajority = (value) => {
+    setMajority(value);
+    form.setFieldsValue({ majority: value });
   };
   const onChangeDoctor = (value) => {
     form.setFieldsValue({ doctor: value });
   };
+
+  const handleNextDoctor = () => {
+    if (typeSelector === 'doc') {
+      // api
+      setOpenTimeModal(true);
+    } else {
+      setOpenInfoModal(true);
+    }
+  };
+
+  const handleNextTime = () => {
+    if (typeSelector === 'time') {
+      // api
+      setOpenDoctorModal(true);
+    } else {
+      setOpenInfoModal(true);
+    }
+  }
 
   return (
     <>
@@ -116,14 +146,20 @@ const BookingModal = () => {
       >
         <Form
           onFinish={(value) => {
-            console.log(value);
+            setOpenDoctorModal(false);
+            handleNextDoctor();
           }}
           onSubmit={(e) => e.preventDefault()}
           form={form}
         >
-          <Form.Item name="majority" label="Chọn chuyên khoa">
-            <Select defaultValue="all" onChange={onChangeMajor}>
-              <Select.Option value="all">Tất cả chuyên khoa</Select.Option>
+          <Form.Item form={form} name="majority" label="Chọn chuyên khoa">
+            <Select 
+              placeholder="Chọn chuyên khoa"
+              value={majority}
+              onChange={onChangeMajority}
+            >
+              <Select.Option value="">Tất cả bác sĩ</Select.Option>
+              <Select.Option value="gp">Đa khoa</Select.Option>
               <Select.Option value="cardiology">Tim mạch</Select.Option>
               <Select.Option value="pediatrics">Nhi</Select.Option>
               <Select.Option value="obstetrics">
@@ -148,7 +184,7 @@ const BookingModal = () => {
           <Form.Item name="doctor" label="Chọn bác sĩ">
             <Select
               placeholder="Chọn bác sĩ"
-              value={form.getFieldValue('doctor')}
+              value={form.getFieldValue("doctor")}
               onChange={onChangeDoctor}
               options={doctorList.map((doctor) => {
                 return {
@@ -165,13 +201,34 @@ const BookingModal = () => {
           </Form.Item>
         </Form>
       </Modal>
+      {/* modal chọn thời gian */}
       <Modal
         title="Title"
         visible={openTimeModal}
         onCancel={handleCancel}
         footer={null}
       >
-        <p>check</p>
+        <Form
+          onFinish={(value) => {
+            setOpenDoctorModal(false);
+            handleNextDoctor();
+          }}
+          onSubmit={(e) => e.preventDefault()}
+          form={form}
+        >
+          <Form.Item label="Form Layout" name="layout">
+            <Radio.Group value={form.getFieldValue('date')}  onChange={(e) => {console.log(e.target.value)}} optionType="button">
+              <Radio.Button value={today}>{today.getDay()}</Radio.Button>
+              <Radio.Button value={today + 1}>{today.getDay()}</Radio.Button>
+              <Radio.Button value={today + 2}>{today.getDate()}</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Tiếp tục
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

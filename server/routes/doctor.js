@@ -126,7 +126,7 @@ router.get("/", verifyToken, async (req, res) => {
 	}
 });
 
-router.get("/list/:majority", verifyToken, async (req, res) => {
+router.get("/:majority", verifyToken, async (req, res) => {
 	try {
 		const majority = req.params.majority;
 		const doctors = await Doctor.find({ majority: majority }).select('_id fullname gender dob rank majority majorityFull desc avaImage');

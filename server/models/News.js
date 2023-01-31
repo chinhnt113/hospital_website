@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema(
+const NewsSchema = new Schema(
   {
     title: {
       type: String,
@@ -15,11 +15,12 @@ const PostSchema = new Schema(
     content: {
       type: String,
     },
-    majority: {
-      type: String,
-    }
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("posts", PostSchema);
+module.exports = mongoose.model("news", NewsSchema);
