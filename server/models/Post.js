@@ -9,6 +9,10 @@ const PostSchema = new Schema(
     image: {
       type: String,
     },
+    url_title: {
+      type: String,
+      unique: true,
+    },
     snippet: {
       type: String,
     },

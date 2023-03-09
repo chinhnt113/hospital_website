@@ -14,7 +14,15 @@ const ScheduleSchema = new Schema(
       ref: "users",
     },
     dayOfExam: {
-      type: Date,
+      type: Number,
+      required: true,
+    },
+    monthOfExam: {
+      type: Number,
+      required: true,
+    },
+    yearOfExam: {
+      type: Number,
       required: true,
     },
     timeSlot: {

@@ -8,7 +8,7 @@ const Post = require("../models/Post");
 // @desc Create post
 // @access Private
 router.post("/", verifyToken, async (req, res) => {
-  const { title, image, snippet, content, majority } = req.body;
+  const { title, image, snippet, content, majority, url_title } = req.body;
 
   //simple validation
   if (!title)
@@ -23,6 +23,7 @@ router.post("/", verifyToken, async (req, res) => {
       snippet,
       content,
       majority,
+      url_title
     });
 
     await newPost.save();
@@ -56,9 +57,22 @@ router.get("/", async (req, res) => {
   try {
     const posts = await Post
       .find({ majority: majority })
+      .select("-content")
       .skip((perPage * page) - perPage)
       .limit(perPage)
     res.json({ success: true, posts });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+router.get("/find-post", async (req, res) => {
+  const { url_title } = req.query;
+  try {
+    const post = await Post
+      .findOne({ url_title: url_title })
+    res.json({ success: true, post });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });

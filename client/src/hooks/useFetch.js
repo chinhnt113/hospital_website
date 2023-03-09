@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiUrl } from "../contexts/constants";
+import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants";
+import setAuthToken from "../utils/setAuthToken";
 
-const useFetch = (url, body) => {
+function useFetch(url, body) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -10,6 +11,7 @@ const useFetch = (url, body) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
       try {
         const res = await axios.get(`${apiUrl}${url}`, {params: body});
         setData(res.data);

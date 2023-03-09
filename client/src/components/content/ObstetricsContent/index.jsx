@@ -15,9 +15,9 @@ const ObstetricsContent = () => {
           ? null 
           : data.posts.map((post,index) => {
             if (index === 0) {
-              return <HeadPost data={data.posts[index]} key={index}/>
+              return <HeadPost data={post} key={index}/>
             }
-            return <NonheadPost data={data.posts[index]} key={index}/>
+            return <NonheadPost data={post} key={index}/>
           })
 
         }

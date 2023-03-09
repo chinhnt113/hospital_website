@@ -8,6 +8,7 @@ import Account from "./views/Account";
 import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import Obstetrics from "./views/content/Obstetrics";
+import PostDetail from "./views/PostDetail";
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/account" element={<Account />} />
           </Route>
-          <Route exact path="/san-phu-khoa-va-ho-tro-sinh-san" element={<Obstetrics />}/>
+          <Route exact path="/san-phu-khoa-va-ho-tro-sinh-san" element={<Obstetrics />} />
+          <Route path="/san-phu-khoa-va-ho-tro-sinh-san/:title" element={<PostDetail />}/>
         </Routes>
       </Router>
     </AuthContextProvider>
