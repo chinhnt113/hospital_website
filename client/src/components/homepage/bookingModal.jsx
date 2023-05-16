@@ -59,31 +59,22 @@ function BookingModal(props) {
   const [openSelectTypeModal, setOpenSelectTypeModal] = useState(false);
   const [openDoctorModal, setOpenDoctorModal] = useState(false);
   const [openTimeModal, setOpenTimeModal] = useState(false);
-  // const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [scheduleInfo, setScheduleInfo] = useState({});
+  const [doctorName, setDoctorName] = useState('');
 
-  const [majority, setMajority] = useState("");
+  const [majority, setMajority] = useState();
 
   const [doctorList, setDoctorList] = useState([]);
   const [unavaibledSchedule, setUnavaibledSchedule] = useState([]);
 
-  const { data, loading, error } = useFetch(`/doctors/${majority}`);
-
   useEffect(() => {
-    const newList =
-      data?.doctors?.map((doctor) => {
-        return {
-          name: doctor.fullname,
-          id: doctor._id,
-          majority: doctor.majority,
-        };
-      }) || [];
-    setDoctorList(newList);
-  }, [data]);
+    getAvailableDoctors();
+  }, [majority]);
 
-  const handleChangeDateRadio = ({target: {value}}) => {
-    form.setFieldsValue({date: value});
+  const handleChangeDateRadio = (date) => {
     if (typeSelector === 'doc') {
-      const url = `${apiUrl}/schedule/by-doctor/${value.dayOfExam}/${value.monthOfExam}/${value.yearOfExam}/${form.getFieldValue("doctor")}`;
+      const url = `${apiUrl}/schedule/by-doctor/${date.dayOfExam}/${date.monthOfExam}/${date.yearOfExam}/${form.getFieldValue("doctor")}`;
       setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
       axios.get(url)
       .then(response => {
@@ -93,6 +84,34 @@ function BookingModal(props) {
         console.log(error);
       });
     }
+  }
+
+  const getAvailableDoctors = () => {
+    let url = '';
+    if (typeSelector === 'time') {
+      const { dayOfExam, monthOfExam, yearOfExam } = form.getFieldValue("date");
+      url = `${apiUrl}/schedule/by-time/${dayOfExam}/${monthOfExam}/${yearOfExam}/${form.getFieldValue("timeSlot")}/${majority || ''}`;
+    } else if (typeSelector === 'doc') {
+      url = `${apiUrl}/schedule/by-time/0/0/0/0/${majority}`;
+    } else {
+      url = `${apiUrl}/doctors`;
+    }
+
+    setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
+    axios.get(url)
+      .then(response => {
+        const newList = response.data?.doctors?.map((doctor) => {
+          return {
+            name: doctor.fullname,
+            id: doctor._id,
+            majority: doctor.majority,
+          };
+        }) || [];
+        setDoctorList(newList);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   const showModal = () => {
@@ -122,9 +141,28 @@ function BookingModal(props) {
     setOpenInfoModal(false);
   };
 
+  const handleBackDoctor = () => {
+    setOpenDoctorModal(false);
+    if (typeSelector === "doc") {
+      setOpenSelectTypeModal(true);
+    } else {
+      setOpenTimeModal(true);
+    }
+  }
+
+  const handleBackTime = () => {
+    setOpenTimeModal(false);
+    if (typeSelector === "doc") {
+      setOpenDoctorModal(true);
+    } else {
+      setOpenSelectTypeModal(true);
+    }
+  }
+
   const onChangeMajority = (value) => {
     setMajority(value);
     form.setFieldsValue({ majority: value });
+    form.setFieldsValue({ doctor: undefined });
   };
   const onChangeDoctor = (value) => {
     form.setFieldsValue({ doctor: value });
@@ -132,7 +170,6 @@ function BookingModal(props) {
 
   const handleNextDoctor = () => {
     if (typeSelector === "doc") {
-      // api
       setOpenTimeModal(true);
     } else {
       postSchedule();
@@ -142,7 +179,7 @@ function BookingModal(props) {
 
   const handleNextTime = () => {
     if (typeSelector === "time") {
-      // api
+      getAvailableDoctors();
       setOpenDoctorModal(true);
     } else {
       postSchedule();
@@ -159,33 +196,28 @@ function BookingModal(props) {
       yearOfExam: form.getFieldValue("date").yearOfExam,
       timeSlot: form.getFieldValue("timeSlot"),
     }
-    console.log(body);
     setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
     axios.post(`${apiUrl}/schedule`, body)
       .then(response => {
-        console.log(response.json());
+        setScheduleInfo(response.data);
+        setDoctorName(doctorList.find((doc) => doc.id === response.data.doctorId)?.name || '')
       })
       .catch(error => {
         console.log(error);
       });
+    form.resetFields();
+    setUnavaibledSchedule([]);
   }
 
-  const checkSelectedDate = (i) => {
-    const selectedDate = form.getFieldValue("date");
-    return _isEqual(selectedDate, getDateForm(i));
-  }
-
-  const radioButtons = [];
-  for (let i = 1; i <= 7; i++) {
-    const date = todayMoment.clone().add(i, "days").format("L");
-    const value = getDateForm(i);
-    const className = checkSelectedDate(i) ? 'ant-radio-button-wrapper-checked' : '';
-    radioButtons.push(
-      <Radio.Button key={i} value={value} className={className}>
-        {date}
-      </Radio.Button>
-    );
-  }
+  const optionDays = [
+    { label: todayMoment.clone().add(1, "days").format("L"), value: getDateForm(1) },
+    { label: todayMoment.clone().add(2, "days").format("L"), value: getDateForm(2) },
+    { label: todayMoment.clone().add(3, "days").format("L"), value: getDateForm(3) },
+    { label: todayMoment.clone().add(4, "days").format("L"), value: getDateForm(4) },
+    { label: todayMoment.clone().add(5, "days").format("L"), value: getDateForm(5) },
+    { label: todayMoment.clone().add(6, "days").format("L"), value: getDateForm(6) },
+    { label: todayMoment.clone().add(7, "days").format("L"), value: getDateForm(7) },
+  ];
 
   return (
     <>
@@ -220,6 +252,7 @@ function BookingModal(props) {
           onClick={() => {
             if (typeSelector === 'time') {
               form.resetFields();
+              setUnavaibledSchedule([]);
             }
             setTypeSelector("doc");
             setOpenSelectTypeModal(false);
@@ -264,26 +297,25 @@ function BookingModal(props) {
               onChange={onChangeMajority}
             >
               <Select.Option value="">Tất cả bác sĩ</Select.Option>
-              <Select.Option value="gp">Đa khoa</Select.Option>
-              <Select.Option value="cardiology">Tim mạch</Select.Option>
+              <Select.Option value="cardio">Tim mạch</Select.Option>
               <Select.Option value="pediatrics">Nhi</Select.Option>
-              <Select.Option value="obstetrics">
+              <Select.Option value="obgyn">
                 Sản phụ khoa và hỗ trợ sinh sản
               </Select.Option>
-              <Select.Option value="oncologyRadiotherapy">
+              <Select.Option value="oncology">
                 Ung bướu - Xạ trị
               </Select.Option>
-              <Select.Option value="generalHealth">
+              <Select.Option value="general">
                 Sức khỏe tổng quát
               </Select.Option>
-              <Select.Option value="gastroenterology">
+              <Select.Option value="gastro">
                 Tiêu hóa - Gan mật
               </Select.Option>
-              <Select.Option value="rheumatology">Cơ xương khớp</Select.Option>
+              <Select.Option value="ortho">Cơ xương khớp</Select.Option>
               <Select.Option value="stemCellAndGene">
                 Tế bào gốc và Công nghệ Gene
               </Select.Option>
-              <Select.Option value="traditional">Y học Cổ truyền</Select.Option>
+              <Select.Option value="tchm">Y học Cổ truyền</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item name="doctor" label="Chọn bác sĩ">
@@ -299,7 +331,10 @@ function BookingModal(props) {
               })}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item className="form-footer">
+            <Button onClick={handleBackDoctor}>
+              Quay lại
+            </Button>
             <Button type="primary" htmlType="submit">
               Tiếp tục
             </Button>
@@ -321,13 +356,20 @@ function BookingModal(props) {
           onSubmit={(e) => e.preventDefault()}
           form={form}
         >
-          <Form.Item label="Chọn ngày" name="date">
+          <Form.Item label="Chọn ngày" name="date2">
             <Radio.Group
               value={form.getFieldValue("date")}
-              onChange={handleChangeDateRadio}
+              onChange={(e) => {
+                form.setFieldsValue({date: e.target.value});
+                handleChangeDateRadio(e.target.value);
+              }}
               optionType="button"
             >
-              {radioButtons}
+              {optionDays.map((day) => (
+                <Radio.Button key={day.value.dayOfExam} value={day.value} className={_isEqual(day.value, form.getFieldValue("date")) ? 'ant-radio-button-wrapper-checked' : ''}>
+                  {day.label}
+                </Radio.Button>
+              ))}
             </Radio.Group>
           </Form.Item>
           <Form.Item label="Chọn khung giờ" name="timeSlot">
@@ -345,13 +387,43 @@ function BookingModal(props) {
               ))}
             </Radio.Group>
           </Form.Item>
-          <Form.Item>
+          <Form.Item className="form-footer">
+            <Button onClick={handleBackTime}>
+              Quay lại
+            </Button>
             <Button type="primary" htmlType="submit">
               Tiếp tục
             </Button>
           </Form.Item>
         </Form>
       </Modal>
+      {/* modal thông tin */}
+      {openInfoModal && (
+        <Modal
+          title="Thông tin đặt lịch khám"
+          visible={openInfoModal}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <div>
+            <div className="info-title">BẠN ĐÃ ĐẶT LỊCH KHÁM THÀNH CÔNG</div>
+            <div className="info-detail">
+              <div className="info-left">
+                <div className="info-doctor">Bác sĩ:</div>
+                <div className="info-time">Thời gian:</div>
+                <div className="info-date">Ngày:</div>
+                <div className="info-status">Trạng thái:</div>
+              </div>
+              <div className="info-right">
+                <div className="info-doctor">{doctorName}</div>
+                <div className="info-time">{timeRanges.find((range) => range.value === scheduleInfo.timeSlot)?.label || ''}</div>
+                <div className="info-date">{`${scheduleInfo.dayOfExam}/${scheduleInfo.monthOfExam}/${scheduleInfo.yearOfExam}`}</div>
+                <div className="info-status">Chờ khám</div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
     </>
   );
 };

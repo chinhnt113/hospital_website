@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require("../middleware/auth");
 
 const Schedule = require("../models/Schedule");
+const Doctor = require("../models/Doctor");
 
 router.post("/", verifyToken, async (req, res) => {
   try {
@@ -59,7 +60,7 @@ router.get("/by-doctor/:dayOfExam/:monthOfExam/:yearOfExam/:doctorId", verifyTok
   }
 });
 
-router.get("/by-time/:dayOfExam/:monthOfExam/:yearOfExam/:timeslot", verifyToken, async (req, res) => {
+router.get("/by-time/:dayOfExam/:monthOfExam/:yearOfExam/:timeslot/:majority?", verifyToken, async (req, res) => {
   try {
     const existingSchedules = await Schedule.find({
       dayOfExam: req.params.dayOfExam,
@@ -68,13 +69,20 @@ router.get("/by-time/:dayOfExam/:monthOfExam/:yearOfExam/:timeslot", verifyToken
       timeSlot: req.params.timeslot,
     });
 
-    const bookedDoctorIds = existingSchedules.map((schedule) => schedule.doctorId);
-    const doctors = await Doctor.find({ _id: { $nin: bookedDoctorIds } });
+    const bookedDoctorIds = existingSchedules.map((schedule) => schedule.doctorId) || [];
+
+    let query = { _id: { $nin: bookedDoctorIds } };
+    if (req.params.majority) {
+      query.majority = req.params.majority;
+    }
+
+    const doctors = await Doctor.find(query).select('_id fullname gender dob rank majority majorityFull desc avaImage');
     res.json({ success: true, doctors: doctors });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
 
 
 module.exports = router;

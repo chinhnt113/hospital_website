@@ -3,9 +3,11 @@ import useFetch from '../../../hooks/useFetch';
 import HeadPost from '../HeadPost'
 import NonheadPost from '../NonheadPost';
 import "../content.scss";
+import { useParams } from 'react-router-dom';
 
-const ObstetricsContent = () => {
-  const { data, loading, error } = useFetch(`/posts`, {majority: "obstetrics"});
+const PostList = () => {
+  const { majority } = useParams();
+  const { data, loading, error } = useFetch(`/posts`, {majority: majority});
 
   return (
     <React.Fragment>
@@ -27,4 +29,4 @@ const ObstetricsContent = () => {
   )
 }
 
-export default ObstetricsContent;
+export default PostList;

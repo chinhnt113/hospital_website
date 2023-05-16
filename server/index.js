@@ -31,6 +31,20 @@ app.use("/api/posts", postRouter);
 app.use("/api/doctors", doctorRouter);
 app.use("/api/schedule", scheduleRouter);
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+const server1 = app.listen(5000, () => {
+  console.log("Server started on port 5000");
+});
+
+const server2 = app.listen(5001, () => {
+  console.log("Server started on port 5001");
+});
+
+const server3 = app.listen(5002, () => {
+  console.log("Server started on port 5002");
+});
+
+module.exports = { server1, server2, server3 };

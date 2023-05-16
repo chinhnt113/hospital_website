@@ -1,16 +1,16 @@
 import React from 'react';
 import Footer from "../../components/footer";
 import Header from "../../components/header";
-import ObstetricsContent from "../../components/content/ObstetricsContent"
+import PostList from '../../components/content/PostList';
 
-const Obstetrics = () => {
+const Majority = () => {
   return (
     <React.Fragment>
       <Header />
-      <ObstetricsContent />
+      <PostList />
       <Footer />
     </React.Fragment>
   )
 }
 
-export default Obstetrics
+export default Majority

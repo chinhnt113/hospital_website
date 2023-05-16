@@ -3,7 +3,6 @@ import parse from 'html-react-parser'
 
 const PostContent = (props) => {
   const { post } = props;
-  console.log(post);
   if (post) return (
     <section>
       <div className="section-title">{post.title}</div>

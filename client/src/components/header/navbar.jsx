@@ -11,7 +11,7 @@ export const MainNavbar = () => {
                         <li className="menu-item">Sức khỏe tổng quát</li>
                         <li className="menu-item">Tim mạch</li>
                         <li className="menu-item">Ung bướu</li>
-                        <li className="menu-item"><Link to="/san-phu-khoa-va-ho-tro-sinh-san">Sản phụ khoa và hỗ trợ sinh sản</Link></li>
+                        <li className="menu-item"><Link to="majority/obgyn">Sản phụ khoa và hỗ trợ sinh sản</Link></li>
                         <li className="menu-item">Nhi</li>
                         <li className="menu-item">Tiêu hóa - Gan mật</li>
                         <li className="menu-item">Cơ xương khớp</li>
