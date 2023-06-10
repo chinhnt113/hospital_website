@@ -8,32 +8,49 @@ const Post = require("../models/Post");
 // @desc Create post
 // @access Private
 router.post("/", verifyToken, async (req, res) => {
-  const { title, image, snippet, content, majority, url_title } = req.body;
+  const posts = req.body; // Array of objects containing posts
 
-  //simple validation
-  if (!title)
+  // Simple validation
+  if (!Array.isArray(posts) || posts.length === 0) {
     return res
       .status(400)
-      .json({ success: false, message: "Title is required" });
+      .json({ success: false, message: "Invalid or empty array of posts" });
+  }
 
   try {
-    const newPost = new Post({
-      title,
-      image,
-      snippet,
-      content,
-      majority,
-      url_title
-    });
+    const newPosts = [];
 
-    await newPost.save();
+    // Loop through each post in the array
+    for (let i = 0; i < posts.length; i++) {
+      const { title, image, snippet, content, majority, url_title } = posts[i];
 
-    res.json({ success: true, message: "Post success!", post: newPost });
+      // Validate each post
+      if (!title) {
+        return res
+          .status(400)
+          .json({ success: false, message: `Title is required for post at index ${i}` });
+      }
+
+      const newPost = new Post({
+        title,
+        image,
+        snippet,
+        content,
+        majority,
+        url_title
+      });
+
+      await newPost.save();
+      newPosts.push(newPost);
+    }
+
+    res.json({ success: true, message: "Posts created successfully", posts: newPosts });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
 
 // @route GET api/posts
 // @desc Read post
