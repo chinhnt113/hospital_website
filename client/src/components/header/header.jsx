@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Dropdown, Menu, Modal } from "antd";
 import { SettingOutlined, LogoutOutlined } from "@ant-design/icons"
+import BookingModal from "../homepage/bookingModal";
 
 export const MainHeader = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export const MainHeader = () => {
   );
 
   return (
-    <div className="header-container">
+    <div className="upper-header-container">
       <div className="header">
         <div className="header-left" onClick={() => {navigate("/")}}>
           <div className="header-logo">
@@ -71,7 +72,7 @@ export const MainHeader = () => {
         </div>
         <div className="header-right">
           <button className="trans-btn">LIÊN HỆ TƯ VẤN</button>
-          <button className="trans-btn">ĐẶT LỊCH KHÁM</button>
+          <BookingModal isHeader />
           {!isAuthenticated ? (
             <>
               <button className="color-btn">
@@ -92,7 +93,7 @@ export const MainHeader = () => {
                 </Link>
               </Dropdown>
               <Modal
-                title="BẠN CÓ CHẮC MUỐN ĐĂNG XUẤT?"
+                title="ĐĂNG XUẤT"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -100,7 +101,7 @@ export const MainHeader = () => {
                 cancelText="QUAY LẠI"
                 centered
                 width={400}
-              ></Modal>
+              >Bạn có chắc muốn đăng xuất?</Modal>
             </>
           )}
         </div>

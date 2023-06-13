@@ -34,7 +34,7 @@ body {
 a {
   text-decoration: none;
   color: var(--dark);
-  &:hover{
+  &:hover {
     color: unset;
   }
 }
@@ -43,6 +43,10 @@ button {
   border: none;
   font-weight: 600;
   cursor: pointer;
+}
+
+.ant-btn {
+  border-radius: 4px;
 }
 
 img {

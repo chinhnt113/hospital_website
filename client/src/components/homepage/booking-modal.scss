@@ -1,0 +1,120 @@
+.booking-modal {
+  display: flex;
+  flex-direction: column;
+
+  .form-footer {
+    margin-bottom: 0;
+    margin-top: 36px;
+
+    .ant-form-item-control-input-content {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.login-required {
+  align-items: center;
+}
+
+.select-type-modal {
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+  padding: 0 20px;
+  button {
+    flex: 1;
+    height: 120px;
+    overflow: hidden;
+    &:hover {
+      background: var(--bgcolor);
+    }
+
+    div {
+      margin-top: 10px;
+      margin-bottom: -12px;
+    }
+  }
+}
+
+.select-doctor-modal {
+  .ant-form-item-label {
+    width: 180px;
+    text-align: left;
+  }
+}
+
+.select-timeslot-modal {
+  .ant-form-item-label {
+    width: 130px;
+    text-align: left;
+  }
+
+  .date-select {
+    .ant-form-item-control {
+      .ant-radio-group {
+        display: flex;
+        justify-content: space-between;
+      }
+      .ant-radio-button-wrapper {
+        width: 64px;
+        height: 60px;
+        padding: 0;
+
+        .ant-radio-button {
+          height: 60px;
+          width: 64px;
+        }
+
+        .date,
+        .day {
+          text-align: center;
+          font-weight: 600;
+        }
+
+        .date {
+          font-size: 12px;
+          margin-bottom: -8px;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+
+  .timeslot-select {
+    .ant-form-item-control {
+      .ant-radio-group {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .ant-radio-button-wrapper {
+        padding: 0;
+        flex: 21%;
+        flex-grow: 21%;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.schedule-info-modal {
+  .info-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--main);
+  }
+
+  .info-detail {
+    display: flex;
+    margin-top: 20px;
+
+    .info-left {
+      margin-left: 60px;
+      width: 140px;
+    }
+  }
+}

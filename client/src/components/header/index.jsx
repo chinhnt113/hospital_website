@@ -4,10 +4,10 @@ import { MainNavbar } from "./navbar";
 
 const index = () => {
   return (
-    <React.Fragment>
+    <div className="header-container">
       <MainHeader />
       <MainNavbar />
-    </React.Fragment>
+    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import PostContent from "../components/content/PostContent"
 import useFetch from '../hooks/useFetch';
+import { Spin } from 'antd';
 
 const PostDetail = () => {
   const { title } = useParams();
@@ -13,7 +14,11 @@ const PostDetail = () => {
   return (
     <React.Fragment>
       <Header />
-      <PostContent post={data.post}/>
+      <section style={{ marginTop: '160px' }}>
+        <Spin spinning={loading} size="large" style={{ minHeight: '200px'}}>
+          <PostContent post={data.post}/>
+        </Spin>
+      </section>
       <Footer />
     </React.Fragment>
   )
