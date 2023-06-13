@@ -39,5 +39,11 @@ app.use("/api/posts", postRouter);
 app.use("/api/doctors", doctorRouter);
 app.use("/api/schedule", scheduleRouter);
 
+app.post("/api/reset-count", (req, res) => {
+  requestCount = 0;
+  console.log("Count reset");
+  res.send("Count reset");
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
