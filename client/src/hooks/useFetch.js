@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants";
+import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants";
 import setAuthToken from "../utils/setAuthToken";
 
 function useFetch(url, body) {
@@ -13,7 +13,7 @@ function useFetch(url, body) {
       setLoading(true);
       setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
       try {
-        const res = await axios.get(`${apiUrl}${url}`, {params: body});
+        const res = await axios.get(`${API_URL}${url}`, {params: body});
         setData(res.data);
       } catch (err) {
         setError(err);

@@ -1,9 +1,9 @@
 import axios from "axios";
-import { apiUrl } from "../contexts/constants";
+import { API_URL } from "../contexts/constants";
 
 export const getAllDoctors = async () => {
   try {
-    await axios.get(`${apiUrl}/doctors`).then((response) => {
+    await axios.get(`${API_URL}/doctors`).then((response) => {
       if (response.data.success) {
         return response.data.doctors;
       }
@@ -16,7 +16,7 @@ export const getAllDoctors = async () => {
 
 export const getAllMajors = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/majors`);
+    const response = await axios.get(`${API_URL}/majors`);
     if (response.data.success) {
       return response.data.majors;
     }

@@ -68,21 +68,30 @@ router.post("/", verifyToken, async (req, res) => {
 // });
 
 router.get("/", async (req, res) => {
-  let perPage = 10;
-  let page = req.query.page || 1;
+  const perPage = 10;
+  const page = parseInt(req.query.page) || 1;
   const { majority } = req.query;
+
   try {
-    const posts = await Post
-      .find({ majority: majority })
+    const totalCount = await Post.countDocuments({ majority: majority });
+
+    const posts = await Post.find({ majority: majority })
       .select("-content")
       .skip((perPage * page) - perPage)
-      .limit(perPage)
-    res.json({ success: true, posts });
+      .limit(perPage);
+
+    res.json({
+      success: true,
+      posts,
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / perPage)
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
 
 router.get("/find-post", async (req, res) => {
   const { url_title } = req.query;

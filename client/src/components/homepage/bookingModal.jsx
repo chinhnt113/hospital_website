@@ -5,7 +5,7 @@ import { getAllDoctors } from "../../action/doctorActions";
 import useFetch from "../../hooks/useFetch";
 import moment from "moment";
 import ColumnGroup from "antd/lib/table/ColumnGroup";
-import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants";
+import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants";
 import setAuthToken from "../../utils/setAuthToken";
 import axios from "axios";
 import _isEqual from 'lodash/isEqual';
@@ -74,7 +74,7 @@ function BookingModal(props) {
 
   const handleChangeDateRadio = (date) => {
     if (typeSelector === 'doc') {
-      const url = `${apiUrl}/schedule/by-doctor/${date.dayOfExam}/${date.monthOfExam}/${date.yearOfExam}/${form.getFieldValue("doctor")}`;
+      const url = `${API_URL}/schedule/by-doctor/${date.dayOfExam}/${date.monthOfExam}/${date.yearOfExam}/${form.getFieldValue("doctor")}`;
       setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
       axios.get(url)
       .then(response => {
@@ -90,11 +90,11 @@ function BookingModal(props) {
     let url = '';
     if (typeSelector === 'time') {
       const { dayOfExam, monthOfExam, yearOfExam } = form.getFieldValue("date");
-      url = `${apiUrl}/schedule/by-time/${dayOfExam}/${monthOfExam}/${yearOfExam}/${form.getFieldValue("timeSlot")}/${majority || ''}`;
+      url = `${API_URL}/schedule/by-time/${dayOfExam}/${monthOfExam}/${yearOfExam}/${form.getFieldValue("timeSlot")}/${majority || ''}`;
     } else if (typeSelector === 'doc') {
-      url = `${apiUrl}/schedule/by-time/0/0/0/0/${majority}`;
+      url = `${API_URL}/schedule/by-time/0/0/0/0/${majority}`;
     } else {
-      url = `${apiUrl}/doctors`;
+      url = `${API_URL}/doctors`;
     }
 
     setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
@@ -197,7 +197,7 @@ function BookingModal(props) {
       timeSlot: form.getFieldValue("timeSlot"),
     }
     setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
-    axios.post(`${apiUrl}/schedule`, body)
+    axios.post(`${API_URL}/schedule`, body)
       .then(response => {
         setScheduleInfo(response.data);
         setDoctorName(doctorList.find((doc) => doc.id === response.data.doctorId)?.name || '')

@@ -7,12 +7,12 @@ const NonheadPost = (props) => {
   return (
     <div className="non-head-post post">
       <div className="post-image">
-        <img src={data.image} alt="post-preview-image" />
+        <img src={data.image?.replace(/^'|'$/g, '')} alt="post-preview-image" />
       </div>
       <div className="post-content">
         <div className="post-title title-1">
           <Link to={`/post/${data.majority}/${data.url_title || ''}`}>
-            {data.title}
+            {data.title.replace('Share:', '')}
           </Link>
         </div>
         <div className="post-snippet">{data.snippet}</div>

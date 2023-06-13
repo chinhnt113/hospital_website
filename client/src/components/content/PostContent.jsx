@@ -5,7 +5,7 @@ const PostContent = (props) => {
   const { post } = props;
   if (post) return (
     <section>
-      <div className="section-title">{post.title}</div>
+      <div className="section-title">{post.title?.replace('Share:', '')}</div>
       <div>{parse(post.content)}</div>
     </section>
   )
