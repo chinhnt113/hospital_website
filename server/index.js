@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRouter = require("./routes/auth");
+const adminRouter = require("./routes/admin");
 const postRouter = require("./routes/post");
 const doctorRouter = require("./routes/doctor");
 const scheduleRouter = require("./routes/schedule");
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/admin", adminRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/doctors", doctorRouter);
 app.use("/api/schedule", scheduleRouter);

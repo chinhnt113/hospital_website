@@ -83,6 +83,44 @@ router.get("/by-time/:dayOfExam/:monthOfExam/:yearOfExam/:timeslot/:majority?", 
   }
 });
 
+router.get("/admin", verifyToken, async (req, res) => {
+  try {
+    const schedules = await Schedule.find()
+      .populate("userId", "username")
+      .populate("doctorId", "doctorname");
+    res.json({ success: true, schedules });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
+router.get("/admin/by-doctor/:doctorId", verifyToken, async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+    const schedules = await Schedule.find({ doctorId })
+      .populate('userId', 'username')
+      .populate('doctorId', 'doctorname');
+    res.json({ success: true, schedules });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.put("/admin/:scheduleId", verifyToken, async (req, res) => {
+  try {
+    const { scheduleId } = req.params;
+    const { status } = req.body;
+    
+    const schedule = await Schedule.findByIdAndUpdate(scheduleId, { status }, { new: true });
+    
+    if (!schedule) {
+      return res.status(404).json({ success: false, message: "Schedule not found" });
+    }
+    
+    res.json({ success: true, schedule });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 module.exports = router;
