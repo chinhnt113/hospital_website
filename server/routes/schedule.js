@@ -14,7 +14,7 @@ router.post("/", verifyToken, async (req, res) => {
       monthOfExam: req.body.monthOfExam,
       yearOfExam: req.body.yearOfExam,
       timeSlot: req.body.timeSlot,
-      status: "open",
+      status: "pending",
     });
 
     Schedule.findOne({
@@ -24,7 +24,6 @@ router.post("/", verifyToken, async (req, res) => {
       monthOfExam: req.body.monthOfExam,
       yearOfExam: req.body.yearOfExam,
       timeSlot: req.body.timeSlot,
-      status: "open",
     }).then((existingSchedule) => {
       if (existingSchedule) {
         // schedule already exists in database

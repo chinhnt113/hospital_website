@@ -6,12 +6,12 @@ const ScheduleSchema = new Schema(
     doctorId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "doctors",
+      ref: "Doctors",
     },
     userId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "users",
+      ref: "Users",
     },
     dayOfExam: {
       type: Number,
@@ -38,4 +38,4 @@ const ScheduleSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("schedule", ScheduleSchema);
+module.exports = mongoose.model("Schedule", ScheduleSchema);
