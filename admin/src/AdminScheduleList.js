@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import moment from "moment";
-import { Table, Tag, Button, Select } from "antd";
-import { Option } from "antd/es/mentions";
+import { Table, Tag, Button, Input, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons"
+import Highlighter from 'react-highlight-words';
 
 const timeRanges = [
   { value: 1, label: "08:00 - 08:20" },
@@ -34,11 +35,11 @@ const timeRanges = [
 const AdminScheduleList = () => {
   const [scheduleList, setScheduleList] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [filterDoctorName, setFilterDoctorName] = useState("");
-  const [filterUserName, setFilterUserName] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
 
   useEffect(() => {
     fetchScheduleList();
@@ -111,18 +112,6 @@ const AdminScheduleList = () => {
     fetchScheduleList();
   };
 
-  const handleFilterDoctorName = (value) => {
-    setFilterDoctorName(value);
-  };
-
-  const handleFilterUserName = (value) => {
-    setFilterUserName(value);
-  };
-
-  const handleFilterStatus = (value) => {
-    setFilterStatus(value);
-  };
-
   const handleSort = (field) => {
     if (field === sortField) {
       setSortOrder(sortOrder === "ascend" ? "descend" : "ascend");
@@ -132,43 +121,105 @@ const AdminScheduleList = () => {
     }
   };
 
-  const filteredScheduleList = scheduleList.filter((schedule) => {
-    const doctorNameMatch =
-      !filterDoctorName ||
-      schedule.doctorId.doctorname.toLowerCase().includes(filterDoctorName.toLowerCase());
-    const userNameMatch =
-      !filterUserName ||
-      (schedule.userId && schedule.userId.username.toLowerCase().includes(filterUserName.toLowerCase()));
-    const statusMatch = !filterStatus || schedule.status === filterStatus;
-  
-    return doctorNameMatch && userNameMatch && statusMatch;
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Tìm kiếm
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Đặt lại
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Lọc
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            Đóng
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1677ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) => {
+      if (dataIndex === "doctorname") {
+        return record.doctorId.doctorname.toString().toLowerCase().includes(value.toLowerCase())
+      }
+      if (dataIndex === "username") {
+        return record.userId.username.toString().toLowerCase().includes(value.toLowerCase())
+      }
+      return record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+    },
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
   });
 
-  const sortedScheduleList = filteredScheduleList.sort((a, b) => {
-    if (sortField === "doctorId") {
-      const nameA = a.doctorId.doctorname.toUpperCase();
-      const nameB = b.doctorId.doctorname.toUpperCase();
-      if (nameA < nameB) {
-        return sortOrder === "ascend" ? -1 : 1;
-      }
-      if (nameA > nameB) {
-        return sortOrder === "ascend" ? 1 : -1;
-      }
-      return 0;
-    }
-  
-    if (sortField === "userId") {
-      const nameA = a.userId && a.userId.username.toUpperCase();
-      const nameB = b.userId && b.userId.username.toUpperCase();
-      if (nameA < nameB) {
-        return sortOrder === "ascend" ? -1 : 1;
-      }
-      if (nameA > nameB) {
-        return sortOrder === "ascend" ? 1 : -1;
-      }
-      return 0;
-    }
-  
+  const sortedScheduleList = scheduleList.sort((a, b) => {
     if (sortField === "dateOfExam") {
       const dateA = moment({
         day: a.dayOfExam,
@@ -215,29 +266,59 @@ const AdminScheduleList = () => {
       title: "Bác sĩ",
       dataIndex: "doctorId.doctorname",
       key: "doctorId",
-      render: (text, record) => (
-        <span
-          className="doctor-name"
-          onClick={() =>
-            handleDoctorClick(record.doctorId._id, record.doctorId.doctorname)
-          }
-        >
-          {record.doctorId.doctorname}
-        </span>
-      ),
+      render: (text, record) =>
+        searchedColumn === "doctorId" ? (
+          <Highlighter
+            highlightStyle={{
+              backgroundColor: '#ffc069',
+              padding: 0,
+            }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={record.doctorId.doctorname ? record.doctorId.doctorname.toString() : ''}
+          />
+        ) : (
+          <span
+            className="doctor-name"
+            onClick={() =>
+              handleDoctorClick(record.doctorId._id, record.doctorId.doctorname)
+            }
+          >
+            {record.doctorId.doctorname}
+          </span>
+        ),
+      ...getColumnSearchProps('doctorname'),
     },
     {
       title: "Người dùng",
       dataIndex: "userId",
       key: "userId",
-      render: (user) => user && user.username,
+      onFilter: (value, record) => record.userId.username.includes(value),
+      render: (text, record) =>
+        searchedColumn === "userId" ? (
+          <Highlighter
+            highlightStyle={{
+              backgroundColor: '#ffc069',
+              padding: 0,
+            }}
+            searchWords={[searchText]}
+            autoEscape
+            textToHighlight={record.userId.username ? record.userId.username.toString() : ''}
+          />
+        ) : (
+          <span>
+            {record.userId.username}
+          </span>
+        ),
+      ...getColumnSearchProps('username'),
     },
     {
-      title: "Ngày khám",
+      title: <div onClick={() => handleSort("dateOfExam")}>Ngày khám</div>,
       dataIndex: "dateOfExam",
       key: "dateOfExam",
       sorter: true,
       sortOrder: sortField === "dateOfExam" && sortOrder,
+      showSorterTooltip: false,
       render: (text, record) => {
         const { dayOfExam, monthOfExam, yearOfExam } = record;
         const date = moment({
@@ -263,6 +344,21 @@ const AdminScheduleList = () => {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      filters: [
+        {
+          text: 'Chờ xác nhận',
+          value: 'pending',
+        },
+        {
+          text: 'Đã xác nhận',
+          value: 'confirmed',
+        },
+        {
+          text: 'Đã hủy',
+          value: 'closed',
+        },
+      ],
+      onFilter: (value, record) => record.status === value,
       render: (status, record) => {
         let color = "green";
         if (status === "pending") {
@@ -272,7 +368,6 @@ const AdminScheduleList = () => {
         } else if (record.expired) {
           color = "orange";
         }
-
         return (
           <Tag color={color}>
             {status === "pending" && "Chờ xác nhận"}
@@ -303,7 +398,7 @@ const AdminScheduleList = () => {
           return (
             <div>
               <Button onClick={() => handleStatusChange(record._id, "closed")}>
-                Hủy
+                Hủy lịch
               </Button>
             </div>
           );
@@ -327,34 +422,6 @@ const AdminScheduleList = () => {
           <Button onClick={handleLogout}>Đăng xuất</Button>
         </div>
       )}
-      <div className="filters">
-        <Select
-          placeholder="Lọc theo bác sĩ"
-          value={filterDoctorName}
-          onChange={handleFilterDoctorName}
-        >
-          <Option value="">Tất cả</Option>
-          {/* Thêm tùy chọn cho các bác sĩ */}
-        </Select>
-        <Select
-          placeholder="Lọc theo người dùng"
-          value={filterUserName}
-          onChange={handleFilterUserName}
-        >
-          <Option value="">Tất cả</Option>
-          {/* Thêm tùy chọn cho các người dùng */}
-        </Select>
-        <Select
-          placeholder="Lọc theo trạng thái"
-          value={filterStatus}
-          onChange={handleFilterStatus}
-        >
-          <Option value="">Tất cả</Option>
-          <Option value="pending">Chờ xác nhận</Option>
-          <Option value="confirmed">Đã xác nhận</Option>
-          <Option value="closed">Đã hủy</Option>
-        </Select>
-      </div>
       <Table
         dataSource={sortedScheduleList}
         columns={columns}
