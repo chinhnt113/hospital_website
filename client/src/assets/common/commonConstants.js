@@ -7,4 +7,5 @@ export const majorityList = [
   { majorityCode: "gastro", majorityFull: "Tiêu hóa - Gan mật" },
   { majorityCode: "ortho", majorityFull: "Cơ xương khớp" },
   { majorityCode: "tchm", majorityFull: "Y học cổ truyền" },
+  { majorityCode: "service", majorityFull: "Dịch vụ" },
 ];

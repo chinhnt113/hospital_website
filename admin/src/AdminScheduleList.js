@@ -1,42 +1,42 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import moment from "moment";
-import { Table, Tag, Button, Input, Space } from "antd";
-import { SearchOutlined } from "@ant-design/icons"
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import moment from 'moment';
+import { Table, Tag, Button, Input, Space } from 'antd';
+import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words';
 
 const timeRanges = [
-  { value: 1, label: "08:00 - 08:20" },
-  { value: 2, label: "08:20 - 08:40" },
-  { value: 3, label: "08:40 - 09:00" },
-  { value: 4, label: "09:00 - 09:20" },
-  { value: 5, label: "09:20 - 09:40" },
-  { value: 6, label: "09:40 - 10:00" },
-  { value: 7, label: "10:00 - 10:20" },
-  { value: 8, label: "10:20 - 10:40" },
-  { value: 9, label: "10:40 - 11:00" },
-  { value: 10, label: "11:00 - 11:20" },
-  { value: 11, label: "11:20 - 11:40" },
-  { value: 12, label: "11:40 - 12:00" },
-  { value: 13, label: "14:00 - 14:20" },
-  { value: 14, label: "14:20 - 14:40" },
-  { value: 15, label: "14:40 - 15:00" },
-  { value: 16, label: "15:00 - 15:20" },
-  { value: 17, label: "15:20 - 15:40" },
-  { value: 18, label: "15:40 - 16:00" },
-  { value: 19, label: "16:00 - 16:20" },
-  { value: 20, label: "16:20 - 16:40" },
-  { value: 21, label: "16:40 - 17:00" },
-  { value: 22, label: "17:00 - 17:20" },
-  { value: 23, label: "17:20 - 17:40" },
-  { value: 24, label: "17:40 - 18:00" },
+  { value: 1, label: '08:00 - 08:20' },
+  { value: 2, label: '08:20 - 08:40' },
+  { value: 3, label: '08:40 - 09:00' },
+  { value: 4, label: '09:00 - 09:20' },
+  { value: 5, label: '09:20 - 09:40' },
+  { value: 6, label: '09:40 - 10:00' },
+  { value: 7, label: '10:00 - 10:20' },
+  { value: 8, label: '10:20 - 10:40' },
+  { value: 9, label: '10:40 - 11:00' },
+  { value: 10, label: '11:00 - 11:20' },
+  { value: 11, label: '11:20 - 11:40' },
+  { value: 12, label: '11:40 - 12:00' },
+  { value: 13, label: '14:00 - 14:20' },
+  { value: 14, label: '14:20 - 14:40' },
+  { value: 15, label: '14:40 - 15:00' },
+  { value: 16, label: '15:00 - 15:20' },
+  { value: 17, label: '15:20 - 15:40' },
+  { value: 18, label: '15:40 - 16:00' },
+  { value: 19, label: '16:00 - 16:20' },
+  { value: 20, label: '16:20 - 16:40' },
+  { value: 21, label: '16:40 - 17:00' },
+  { value: 22, label: '17:00 - 17:20' },
+  { value: 23, label: '17:20 - 17:40' },
+  { value: 24, label: '17:40 - 18:00' },
 ];
 
 const AdminScheduleList = () => {
   const [scheduleList, setScheduleList] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [sortField, setSortField] = useState("");
-  const [sortOrder, setSortOrder] = useState("");
+  const [sortField, setSortField] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -47,8 +47,8 @@ const AdminScheduleList = () => {
 
   const fetchScheduleList = async (doctorId = null) => {
     try {
-      const token = sessionStorage.getItem("accessToken");
-      let url = "http://localhost:5000/api/schedule/admin";
+      const token = sessionStorage.getItem('accessToken');
+      let url = 'http://localhost:5000/api/schedule/admin';
 
       if (doctorId) {
         url = `http://localhost:5000/api/schedule/admin/by-doctor/${doctorId}`;
@@ -77,7 +77,7 @@ const AdminScheduleList = () => {
 
   const handleStatusChange = async (scheduleId, status) => {
     try {
-      const token = sessionStorage.getItem("accessToken");
+      const token = sessionStorage.getItem('accessToken');
 
       const response = await axios.put(
         `http://localhost:5000/api/schedule/admin/${scheduleId}`,
@@ -92,10 +92,9 @@ const AdminScheduleList = () => {
       const { success, schedule } = response.data;
 
       if (success) {
-        // ...
         const updatedScheduleList = scheduleList.map((schedule) => {
           if (schedule._id === scheduleId) {
-            return { ...schedule, status, expired: scheduleExpired(schedule) };
+            return { ...schedule, status };
           }
           return schedule;
         });
@@ -114,10 +113,10 @@ const AdminScheduleList = () => {
 
   const handleSort = (field) => {
     if (field === sortField) {
-      setSortOrder(sortOrder === "ascend" ? "descend" : "ascend");
+      setSortOrder(sortOrder === 'ascend' ? 'descend' : 'ascend');
     } else {
       setSortField(field);
-      setSortOrder("ascend");
+      setSortOrder('ascend');
     }
   };
 
@@ -152,10 +151,10 @@ const AdminScheduleList = () => {
         />
         <Space>
           <Button
-            type="primary"
+            type='primary'
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size="small"
+            size='small'
             style={{
               width: 90,
             }}
@@ -164,7 +163,7 @@ const AdminScheduleList = () => {
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
+            size='small'
             style={{
               width: 90,
             }}
@@ -172,8 +171,8 @@ const AdminScheduleList = () => {
             Đặt lại
           </Button>
           <Button
-            type="link"
-            size="small"
+            type='link'
+            size='small'
             onClick={() => {
               confirm({
                 closeDropdown: false,
@@ -185,8 +184,8 @@ const AdminScheduleList = () => {
             Lọc
           </Button>
           <Button
-            type="link"
-            size="small"
+            type='link'
+            size='small'
             onClick={() => {
               close();
             }}
@@ -204,10 +203,10 @@ const AdminScheduleList = () => {
       />
     ),
     onFilter: (value, record) => {
-      if (dataIndex === "doctorname") {
+      if (dataIndex === 'doctorname') {
         return record.doctorId.doctorname.toString().toLowerCase().includes(value.toLowerCase())
       }
-      if (dataIndex === "username") {
+      if (dataIndex === 'username') {
         return record.userId.username.toString().toLowerCase().includes(value.toLowerCase())
       }
       return record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
@@ -220,7 +219,7 @@ const AdminScheduleList = () => {
   });
 
   const sortedScheduleList = scheduleList.sort((a, b) => {
-    if (sortField === "dateOfExam") {
+    if (sortField === 'dateOfExam') {
       const dateA = moment({
         day: a.dayOfExam,
         month: a.monthOfExam - 1,
@@ -233,10 +232,10 @@ const AdminScheduleList = () => {
       });
   
       if (dateA.isBefore(dateB)) {
-        return sortOrder === "ascend" ? -1 : 1;
+        return sortOrder === 'ascend' ? -1 : 1;
       }
       if (dateA.isAfter(dateB)) {
-        return sortOrder === "ascend" ? 1 : -1;
+        return sortOrder === 'ascend' ? 1 : -1;
       }
       return 0;
     }
@@ -244,30 +243,18 @@ const AdminScheduleList = () => {
     return 0;
   });
 
-  const scheduleExpired = (schedule) => {
-    const { dayOfExam, monthOfExam, yearOfExam } = schedule;
-    const currentDate = moment();
-    const scheduleDate = moment({
-      day: dayOfExam,
-      month: monthOfExam - 1,
-      year: yearOfExam,
-    });
-
-    return currentDate.isAfter(scheduleDate);
-  };
-
   const handleLogout = () => {
-    sessionStorage.removeItem("accessToken");
-    window.location.href = "/";
+    sessionStorage.removeItem('accessToken');
+    window.location.href = '/';
   };
 
   const columns = [
     {
-      title: "Bác sĩ",
-      dataIndex: "doctorId.doctorname",
-      key: "doctorId",
+      title: 'Bác sĩ',
+      dataIndex: 'doctorId.doctorname',
+      key: 'doctorId',
       render: (text, record) =>
-        searchedColumn === "doctorId" ? (
+        searchedColumn === 'doctorId' ? (
           <Highlighter
             highlightStyle={{
               backgroundColor: '#ffc069',
@@ -279,7 +266,7 @@ const AdminScheduleList = () => {
           />
         ) : (
           <span
-            className="doctor-name"
+            className='doctor-name'
             onClick={() =>
               handleDoctorClick(record.doctorId._id, record.doctorId.doctorname)
             }
@@ -290,12 +277,12 @@ const AdminScheduleList = () => {
       ...getColumnSearchProps('doctorname'),
     },
     {
-      title: "Người dùng",
-      dataIndex: "userId",
-      key: "userId",
+      title: 'Người dùng',
+      dataIndex: 'userId',
+      key: 'userId',
       onFilter: (value, record) => record.userId.username.includes(value),
       render: (text, record) =>
-        searchedColumn === "userId" ? (
+        searchedColumn === 'userId' ? (
           <Highlighter
             highlightStyle={{
               backgroundColor: '#ffc069',
@@ -313,11 +300,11 @@ const AdminScheduleList = () => {
       ...getColumnSearchProps('username'),
     },
     {
-      title: <div onClick={() => handleSort("dateOfExam")}>Ngày khám</div>,
-      dataIndex: "dateOfExam",
-      key: "dateOfExam",
+      title: <div onClick={() => handleSort('dateOfExam')}>Ngày khám</div>,
+      dataIndex: 'dateOfExam',
+      key: 'dateOfExam',
       sorter: true,
-      sortOrder: sortField === "dateOfExam" && sortOrder,
+      sortOrder: sortField === 'dateOfExam' && sortOrder,
       showSorterTooltip: false,
       render: (text, record) => {
         const { dayOfExam, monthOfExam, yearOfExam } = record;
@@ -326,24 +313,24 @@ const AdminScheduleList = () => {
           month: monthOfExam - 1, // Trừ đi 1 vì tháng trong moment.js bắt đầu từ 0 (0 - 11)
           year: yearOfExam,
         });
-        return date.format("DD/MM/YYYY");
+        return date.format('DD/MM/YYYY');
       },
     },
     {
-      title: "Khung giờ",
-      dataIndex: "timeSlot",
-      key: "timeSlot",
+      title: 'Khung giờ',
+      dataIndex: 'timeSlot',
+      key: 'timeSlot',
       render: (timeSlot) => {
         const selectedTimeRange = timeRanges.find(
           (range) => range.value === timeSlot
         );
-        return selectedTimeRange ? selectedTimeRange.label : "-";
+        return selectedTimeRange ? selectedTimeRange.label : '-';
       },
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
       filters: [
         {
           text: 'Chờ xác nhận',
@@ -360,44 +347,48 @@ const AdminScheduleList = () => {
       ],
       onFilter: (value, record) => record.status === value,
       render: (status, record) => {
-        let color = "green";
-        if (status === "pending") {
-          color = "blue";
-        } else if (status === "closed") {
-          color = "red";
-        } else if (record.expired) {
-          color = "orange";
+        let color = 'green';
+        if (status === 'pending') {
+          color = 'blue';
+        } else if (status === 'closed') {
+          color = 'red';
+        } else if (status === 'expired') {
+          color = 'orange';
         }
         return (
           <Tag color={color}>
-            {status === "pending" && "Chờ xác nhận"}
-            {status === "confirmed" && "Đã xác nhận"}
-            {status === "closed" && "Đã hủy"}
+            {status === 'pending' && 'Chờ xác nhận'}
+            {status === 'confirmed' && 'Đã xác nhận'}
+            {status === 'closed' && 'Đã hủy'}
+            {status === 'expired' && 'Quá ngày'}
           </Tag>
         );
       },
     },
     {
-      title: "Thao tác",
-      key: "actions",
+      title: 'Thao tác',
+      key: 'actions',
       render: (_, record) => {
         const { status, _id } = record;
 
-        if (status === "pending") {
+        if (status === 'pending') {
           return (
             <div>
-              <Button onClick={() => handleStatusChange(_id, "confirmed")}>
+              <Button onClick={() => handleStatusChange(_id, 'confirmed')}>
                 Xác nhận lịch
               </Button>
-              <Button onClick={() => handleStatusChange(_id, "closed")}>
+              <Button onClick={() => handleStatusChange(_id, 'closed')}>
                 Hủy lịch
               </Button>
             </div>
           );
-        } else if (record.status === "confirmed") {
+        } else if (record.status === 'confirmed') {
           return (
             <div>
-              <Button onClick={() => handleStatusChange(record._id, "closed")}>
+              <Button onClick={() => handleStatusChange(_id, 'pending')}>
+                Hủy xác nhận
+              </Button>
+              <Button onClick={() => handleStatusChange(record._id, 'closed')}>
                 Hủy lịch
               </Button>
             </div>

@@ -389,8 +389,17 @@ section > * {
   color: var(--main);
 }
 .doctor-avatar {
+  min-width: 180px;
   height: 250px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
+
 
 .container-service {
   background-color: var(--main-lighter);
@@ -400,12 +409,35 @@ section > * {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+
+  .tong-quat {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20210826_103319_815440_20395.max-800x800.jpg')
+      top center / cover no-repeat;
+  }
+  .te-bao-goc {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20190601_055208_889687_te-bao-goc.max-800x800.jpg')
+      top center / cover no-repeat;
+  }
+  .vac-xin {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20191130_131851_607093_tiem-phong-viem-gan-B.max-800x800.jpg')
+      top center / cover no-repeat;
+  }
+  .covid {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20200331_151357_921731_473155120-1024x683.max-800x800.jpg')
+      top center / cover no-repeat;
+  }
+  .ung-thu {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20190701_111232_382707_pap-smear-test.max-1800x1800.jpg')
+      top center / cover no-repeat;
+  }
+  .thai-san {
+    background: url('https://vinmec-prod.s3.amazonaws.com/images/20210826_094309_989880_shutterstock_67226773.max-800x800.jpg')
+      top center / cover no-repeat;
+  }
 }
 .service66 {
   flex: 1 1 66%;
   padding-bottom: 66%;
-  background: url("https://younetmedia.com/wp-content/uploads/2019/07/kham-suc-khoe-tong-quat-younet-media-1.png")
-    top center / cover no-repeat;
 }
 .service33-col {
   flex: 1 1 33%;

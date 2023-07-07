@@ -9,7 +9,6 @@ import { Spin } from 'antd';
 const PostDetail = () => {
   const { title } = useParams();
   const { data, loading, error } = useFetch(`/posts/find-post`, {url_title: title});
-  console.log(data.post)
 
   return (
     <React.Fragment>

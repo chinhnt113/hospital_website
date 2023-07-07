@@ -16,16 +16,16 @@ const MainCarousel = () => {
     <div style={{ marginTop: '160px'}}>
       <Carousel autoplay autoplaySpeed={4000}>
         <div>
-          <h3 style={contentStyle}><img style={imageStyle} src="https://www.mayoclinic.org/~/media/3203DF05B9024023A8EC7934CF2FBE37.ashx" alt=""/></h3>
+          <h3 style={contentStyle}><img style={imageStyle} src="https://vinmec-prod.s3.amazonaws.com/images/vicaread/20230511_091628_118061_Banner_Web-1920x550.jpg" alt=""/></h3>
         </div>
         <div>
-          <h3 style={contentStyle}><img style={imageStyle} src="https://www.mayoclinic.org/~/media/3203DF05B9024023A8EC7934CF2FBE37.ashx" alt=""/></h3>
+          <h3 style={contentStyle}><img style={imageStyle} src="https://vinmec-prod.s3.amazonaws.com/images/vicaread/20221208_155119_184319_221203_Bweb_VmDR_Ra_mat_cong_thong_tin_dien_tu-v2-1.png" alt=""/></h3>
         </div>
         <div>
-          <h3 style={contentStyle}><img style={imageStyle} src="https://www.mayoclinic.org/~/media/3203DF05B9024023A8EC7934CF2FBE37.ashx" alt=""/></h3>
+          <h3 style={contentStyle}><img style={imageStyle} src="https://vinmec-prod.s3.amazonaws.com/images/vicaread/20230511_091628_118061_Banner_Web-1920x550.jpg" alt=""/></h3>
         </div>
         <div>
-          <h3 style={contentStyle}><img style={imageStyle} src="https://www.mayoclinic.org/~/media/3203DF05B9024023A8EC7934CF2FBE37.ashx" alt=""/></h3>
+          <h3 style={contentStyle}><img style={imageStyle} src="https://vinmec-prod.s3.amazonaws.com/images/vicaread/20221208_155119_184319_221203_Bweb_VmDR_Ra_mat_cong_thong_tin_dien_tu-v2-1.png" alt=""/></h3>
         </div>
       </Carousel>
     </div>

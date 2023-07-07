@@ -20,7 +20,9 @@ export const MainNavbar = () => {
           </li>
           <li className="nav-item">Đội ngũ bác sĩ</li>
           <li className="nav-item">
-            Gói dịch vụ <i className="fa-solid fa-chevron-right"></i>
+            <Link to={`/majority/service`}>
+              Gói dịch vụ <i className="fa-solid fa-chevron-right"></i>
+            </Link>
             <ul className="dropdown-menu">
               <li className="menu-item">Khám sức khỏe tổng quát</li>
               <li className="menu-item">Rà soát ung thư</li>

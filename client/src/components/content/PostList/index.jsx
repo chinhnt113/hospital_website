@@ -32,7 +32,6 @@ const PostList = () => {
   }, [majority, currentPage]);
 
   const handlePageChange = (page) => {
-    console.log(page);
     setCurrentPage(page);
   };
 

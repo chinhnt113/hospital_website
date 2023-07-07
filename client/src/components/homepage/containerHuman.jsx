@@ -1,40 +1,62 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
+import { API_URL } from '../../contexts/constants';
+
+const sampleDoctors = [
+  {
+    fullname: "LÊ TIẾN ĐẠT",
+    rank: "PSG, Tiến sĩ, Bác sĩ",
+    desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
+          biệt có thế mạnh về mảng...`,
+    avaUrl:
+      "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
+  },
+  {
+    fullname: "LÊ TIẾN ĐẠT",
+    rank: "PSG, Tiến sĩ, Bác sĩ",
+    desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
+          biệt có thế mạnh về mảng...`,
+    avaUrl:
+      "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
+  },
+  {
+    fullname: "LÊ TIẾN ĐẠT",
+    rank: "PSG, Tiến sĩ, Bác sĩ",
+    desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
+          biệt có thế mạnh về mảng...`,
+    avaUrl:
+      "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
+  },
+  {
+    fullname: "LÊ TIẾN ĐẠT",
+    rank: "PSG, Tiến sĩ, Bác sĩ",
+    desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
+          biệt có thế mạnh về mảng...`,
+    avaUrl:
+      "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
+  },
+];
 
 const ContainerHuman = () => {
-  const doctors = [
-    {
-      fullname: "LÊ TIẾN ĐẠT",
-      rank: "PSG, Tiến sĩ, Bác sĩ",
-      desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
-            biệt có thế mạnh về mảng...`,
-      avaUrl:
-        "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
-    },
-    {
-      fullname: "LÊ TIẾN ĐẠT",
-      rank: "PSG, Tiến sĩ, Bác sĩ",
-      desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
-            biệt có thế mạnh về mảng...`,
-      avaUrl:
-        "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
-    },
-    {
-      fullname: "LÊ TIẾN ĐẠT",
-      rank: "PSG, Tiến sĩ, Bác sĩ",
-      desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
-            biệt có thế mạnh về mảng...`,
-      avaUrl:
-        "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
-    },
-    {
-      fullname: "LÊ TIẾN ĐẠT",
-      rank: "PSG, Tiến sĩ, Bác sĩ",
-      desc: `22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu, đặc
-            biệt có thế mạnh về mảng...`,
-      avaUrl:
-        "https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png",
-    },
-  ];
+  const [highlightDoctors, setHighlightDoctors] = useState(sampleDoctors);
+
+  useEffect(() => {
+    const fetchHighLightDoctors = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/doctors/highlight`);
+        const { success, doctors } = response.data;
+        
+        if (success) {
+          setHighlightDoctors(doctors);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchHighLightDoctors();
+  }, []);
 
   return (
     <section className="container-human">
@@ -58,7 +80,7 @@ const ContainerHuman = () => {
         </div>
       </div>
       <div className="doctor-slider">
-        {doctors.map((item, index) => {
+        {highlightDoctors.map((item, index) => {
           return (
             <div className="doctor-item" key={index}>
               <div className="doctor-info">
@@ -71,7 +93,7 @@ const ContainerHuman = () => {
                 </Link>
               </div>
               <div className="doctor-avatar">
-                <img src={item.avaUrl} alt={item.fullname}/>
+                <img src={item.avaImage} alt={item.fullname}/>
               </div>
             </div>
           );

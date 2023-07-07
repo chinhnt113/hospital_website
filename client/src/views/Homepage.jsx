@@ -18,7 +18,7 @@ const Homepage = () => {
         <ContainerAchieve />
         <ContainerHuman className="container-human" />
         <ContainerServices className="container-services" />
-        <ContainerSymptom className="container-symptom" />
+        {/* <ContainerSymptom className="container-symptom" /> */}
       </div>
       <Footer />
     </div>

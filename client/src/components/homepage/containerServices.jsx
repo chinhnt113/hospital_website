@@ -14,7 +14,7 @@ const ContainerServices = () => {
             </div>
           </div>
           <div className="section-more">
-            <Link to="/">
+            <Link to="/majority/service">
               <i className="fa-solid fa-bed-pulse"></i>
               XEM TẤT CẢ DỊCH VỤ
               <ForwardOutlined style={{fontSize:"24px"}} />
@@ -22,25 +22,25 @@ const ContainerServices = () => {
           </div>
         </div>
         <div className="service-show">
-          <div className="service-item service66">
+          <div className="service-item service66 tong-quat">
             <Link to="/"><div>KHÁM SỨC KHỎE TỔNG QUÁT</div></Link>
           </div>
           <div className="service33-col">
-            <div className="service-item service33">
+            <div className="service-item service33 ung-thu">
               <Link to="/"><div>TẦM SOÁT UNG THƯ</div> </Link>
             </div>
-            <div className="service-item service33">
+            <div className="service-item service33 te-bao-goc">
               <Link to="/"><div>CÔNG NGHỆ TẾ BÀO GỐC</div> </Link>
             </div>
           </div>
-          <div className="service-item service25">
+          <div className="service-item service25 vac-xin">
             <Link to="/"><div>TIÊM VACXIN</div> </Link>
           </div>
-          <div className="service-item service25">
+          <div className="service-item service25 covid">
             <Link to="/"><div>KHÁM HẬU COVID</div> </Link>
           </div>
-          <div className="service-item service50">
-            <Link to="/"><div>THAI SẢN TRỌN GÓI</div> </Link>
+          <div className="service-item service50 thai-san">
+            <Link to="/post/service/dich-vu-thai-san-sinh-con-tron-goi"><div>THAI SẢN TRỌN GÓI</div> </Link>
           </div>
         </div>
       </section>

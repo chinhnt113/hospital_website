@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Modal, Form, Input, Select, Radio } from "antd";
+import { Button, Modal, Form, Input, Select, Radio, notification } from "antd";
 import { AuthContext } from "../../contexts/AuthContext";
 import moment from "moment";
 import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from "../../contexts/constants";
@@ -61,15 +61,27 @@ function BookingModal(props) {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [scheduleInfo, setScheduleInfo] = useState({});
   const [doctorName, setDoctorName] = useState('');
-
   const [majority, setMajority] = useState();
-
   const [doctorList, setDoctorList] = useState([]);
   const [unavaibledSchedule, setUnavaibledSchedule] = useState([]);
+  const [doctorWorkday, setDoctorWorkday] = useState([1,2,3,4,5,6,7])
+
+  const openNotification = (type, title, message) => {
+    notification[type]({
+      message: title || 'Thông báo',
+      description: message,
+    });
+  };
 
   useEffect(() => {
     getAvailableDoctors();
   }, [majority]);
+
+  useEffect(() => {
+    if (!form.getFieldValue('doctor')) {
+      setDoctorWorkday([1,2,3,4,5,6,7]);
+    }
+  }, [form.getFieldValue('doctor')]);
 
   const handleChangeDateRadio = (date) => {
     if (typeSelector === 'doc') {
@@ -77,7 +89,11 @@ function BookingModal(props) {
       setAuthToken(localStorage[LOCAL_STORAGE_TOKEN_NAME]);
       axios.get(url)
       .then(response => {
-        setUnavaibledSchedule(response.data.timeslots);
+        const {timeslots} = response.data;
+        setUnavaibledSchedule(timeslots);
+        if (timeslots.includes(form.getFieldValue("timeSlot"))) {
+          form.setFieldsValue({ timeSlot: null });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -104,6 +120,7 @@ function BookingModal(props) {
             name: doctor.fullname,
             id: doctor._id,
             majority: doctor.majority,
+            workday: doctor.workday,
           };
         }) || [];
         setDoctorList(newList);
@@ -164,10 +181,17 @@ function BookingModal(props) {
     form.setFieldsValue({ doctor: undefined });
   };
   const onChangeDoctor = (value) => {
+    const thisDoctor = doctorList.find((doctor) => doctor.id === value);
+    setDoctorWorkday(thisDoctor.workday);
     form.setFieldsValue({ doctor: value });
   };
 
   const handleNextDoctor = () => {
+    if (!form.getFieldValue("doctor")) {
+      openNotification('error', 'Chưa đủ thông tin', 'Vui lòng chọn bác sĩ');
+      return;
+    }
+    setOpenDoctorModal(false);
     if (typeSelector === "doc") {
       setOpenTimeModal(true);
     } else {
@@ -177,6 +201,14 @@ function BookingModal(props) {
   };
 
   const handleNextTime = () => {
+    if (
+      !form.getFieldValue("date")
+      || !form.getFieldValue("timeSlot")
+    ) {
+      openNotification('error', 'Chưa đủ thông tin', 'Vui lòng chọn đầy đủ ngày và khung giờ');
+      return;
+    }
+    setOpenTimeModal(false);
     if (typeSelector === "time") {
       getAvailableDoctors();
       setOpenDoctorModal(true);
@@ -210,36 +242,43 @@ function BookingModal(props) {
 
   const optionDays = [
     {
+      dayOfWeekValue: todayMoment.clone().add(1, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(1, "days").format("dddd"),
       label: todayMoment.clone().add(1, "days").format("DD/MM"),
       value: getDateForm(1) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(2, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(2, "days").format("dddd"),
       label: todayMoment.clone().add(2, "days").format("DD/MM"),
       value: getDateForm(2) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(3, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(3, "days").format("dddd"),
       label: todayMoment.clone().add(3, "days").format("DD/MM"),
       value: getDateForm(3) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(4, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(4, "days").format("dddd"),
       label: todayMoment.clone().add(4, "days").format("DD/MM"),
       value: getDateForm(4) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(5, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(5, "days").format("dddd"),
       label: todayMoment.clone().add(5, "days").format("DD/MM"),
       value: getDateForm(5) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(6, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(6, "days").format("dddd"),
       label: todayMoment.clone().add(6, "days").format("DD/MM"),
       value: getDateForm(6) 
     },
     {
+      dayOfWeekValue: todayMoment.clone().add(7, "days").isoWeekday(),
       dayOfWeek: todayMoment.clone().add(7, "days").format("dddd"),
       label: todayMoment.clone().add(7, "days").format("DD/MM"),
       value: getDateForm(7) 
@@ -324,7 +363,6 @@ function BookingModal(props) {
         <div className="booking-modal select-doctor-modal">
           <Form
             onFinish={(value) => {
-              setOpenDoctorModal(false);
               handleNextDoctor();
             }}
             onSubmit={(e) => e.preventDefault()}
@@ -393,7 +431,6 @@ function BookingModal(props) {
         <div className="booking-modal select-timeslot-modal">
           <Form
             onFinish={(value) => {
-              setOpenTimeModal(false);
               handleNextTime();
             }}
             onSubmit={(e) => e.preventDefault()}
@@ -414,6 +451,7 @@ function BookingModal(props) {
                     value={day.value} 
                     className={_isEqual(day.value, form.getFieldValue("date")) ? 'ant-radio-button-wrapper-checked' : ''} 
                     style={{ color: `${day.dayOfWeek === 'thứ bảy' ? '#efbd34' : day.dayOfWeek === 'chủ nhật' ? '#ef3434' : ''}` }}
+                    disabled={!doctorWorkday.includes(day.dayOfWeekValue)}
                   >
                     <div class="date">
                       {day.dayOfWeek.charAt(0).toUpperCase() + day.dayOfWeek.slice(1)}

@@ -61,33 +61,53 @@ router.get("/by-doctor/:dayOfExam/:monthOfExam/:yearOfExam/:doctorId", verifyTok
 
 router.get("/by-time/:dayOfExam/:monthOfExam/:yearOfExam/:timeslot/:majority?", verifyToken, async (req, res) => {
   try {
-    const existingSchedules = await Schedule.find({
-      dayOfExam: req.params.dayOfExam,
-      monthOfExam: req.params.monthOfExam,
-      yearOfExam: req.params.yearOfExam,
-      timeSlot: req.params.timeslot,
-    });
+    const { dayOfExam, monthOfExam, yearOfExam, timeslot } = req.params;
 
+    const isAllZero = dayOfExam === '0' && monthOfExam === '0' && yearOfExam === '0' && timeslot === '0';
+    const existingSchedules = await Schedule.find({
+      dayOfExam,
+      monthOfExam,
+      yearOfExam,
+      timeSlot: timeslot,
+    });
     const bookedDoctorIds = existingSchedules.map((schedule) => schedule.doctorId) || [];
 
-    let query = { _id: { $nin: bookedDoctorIds } };
+    let query = {
+      _id: { $nin: bookedDoctorIds },
+    };
+    if (!isAllZero) {
+      query.workday = { $in: [new Date(`${yearOfExam}-${monthOfExam}-${dayOfExam}`)] };
+    }
     if (req.params.majority) {
       query.majority = req.params.majority;
     }
 
-    const doctors = await Doctor.find(query).select('_id fullname gender dob rank majority majorityFull desc avaImage');
+    const doctors = await Doctor.find(query).select('_id fullname gender dob rank majority majorityFull desc avaImage workday');
     res.json({ success: true, doctors: doctors });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
+
 router.get("/admin", verifyToken, async (req, res) => {
   try {
     const schedules = await Schedule.find()
       .populate("userId", "username")
       .populate("doctorId", "doctorname");
-    res.json({ success: true, schedules });
+
+    const currentDate = new Date();
+    const updatedSchedules = schedules.map((schedule) => {
+      const examDate = new Date(
+        schedule.yearOfExam,
+        schedule.monthOfExam - 1,
+        schedule.dayOfExam
+      );
+      schedule.status = schedule.status !== 'closed' && examDate < currentDate ? "expired" : schedule.status;
+      return schedule;
+    });
+
+    res.json({ success: true, schedules: updatedSchedules });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -99,7 +119,19 @@ router.get("/admin/by-doctor/:doctorId", verifyToken, async (req, res) => {
     const schedules = await Schedule.find({ doctorId })
       .populate('userId', 'username')
       .populate('doctorId', 'doctorname');
-    res.json({ success: true, schedules });
+
+    const currentDate = new Date();
+    const updatedSchedules = schedules.map((schedule) => {
+      const examDate = new Date(
+        schedule.yearOfExam,
+        schedule.monthOfExam - 1,
+        schedule.dayOfExam
+      );
+      schedule.status = schedule.status !== 'closed' && examDate < currentDate ? "expired" : schedule.status;
+      return schedule;
+    });
+
+    res.json({ success: true, schedules: updatedSchedules });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
