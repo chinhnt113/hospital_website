@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Input, Button, message } from 'antd';
+import { API_URL } from './constant';
 
 const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -8,7 +9,7 @@ const AdminLogin = () => {
   const handleLogin = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', values); // Đường dẫn API cần được chỉnh sửa tùy thuộc vào BE của bạn
+      const response = await axios.post(`${API_URL}/admin/login`, values); // Đường dẫn API cần được chỉnh sửa tùy thuộc vào BE của bạn
       const data = response.data;
       if (data.success) {
         sessionStorage.setItem('accessToken', data.accessToken);

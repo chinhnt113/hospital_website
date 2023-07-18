@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Table, Tag, Button, Input, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words';
+import { API_URL } from './constant';
 
 const timeRanges = [
   { value: 1, label: '08:00 - 08:20' },
@@ -48,10 +49,10 @@ const AdminScheduleList = () => {
   const fetchScheduleList = async (doctorId = null) => {
     try {
       const token = sessionStorage.getItem('accessToken');
-      let url = 'http://localhost:5000/api/schedule/admin';
+      let url = `${API_URL}/schedule/admin`;
 
       if (doctorId) {
-        url = `http://localhost:5000/api/schedule/admin/by-doctor/${doctorId}`;
+        url = `${API_URL}/schedule/admin/by-doctor/${doctorId}`;
       }
 
       const response = await axios.get(url, {
@@ -80,7 +81,7 @@ const AdminScheduleList = () => {
       const token = sessionStorage.getItem('accessToken');
 
       const response = await axios.put(
-        `http://localhost:5000/api/schedule/admin/${scheduleId}`,
+        `${API_URL}schedule/admin/${scheduleId}`,
         { status },
         {
           headers: {
@@ -416,7 +417,7 @@ const AdminScheduleList = () => {
       <Table
         dataSource={sortedScheduleList}
         columns={columns}
-        pagination={false}
+        // pagination={true}
       />
     </div>
   );

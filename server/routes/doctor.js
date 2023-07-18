@@ -116,7 +116,7 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const doctors = await Doctor.find().select(
       "_id fullname gender dob rank majority majorityFull desc avaImage workday"
@@ -141,7 +141,7 @@ router.get("/majority/:majority", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/highlight", verifyToken, async (req, res) => {
+router.get("/highlight", async (req, res) => {
   try {
     const doctors = await Doctor.aggregate([
       {
