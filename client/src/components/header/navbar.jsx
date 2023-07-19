@@ -18,7 +18,11 @@ export const MainNavbar = () => {
 							})}
             </ul>
           </li>
-          <li className="nav-item">Đội ngũ bác sĩ</li>
+          <li className="nav-item">
+            <Link to={`/doctors`}>
+              Đội ngũ bác sĩ
+            </Link>
+          </li>
           <li className="nav-item">
             <Link to={`/majority/service`}>
               Gói dịch vụ <i className="fa-solid fa-chevron-right"></i>

@@ -7,7 +7,6 @@ const PostContent = (props) => {
   const processedPost = post?.content
     .replace(/v-lazy=["'](.*?)['"]/g, (match, url) => `src="${url}`)
     .replace(/\.jpg'"/g, '.jpg"');
-  console.log(processedPost);
   if (post) return (
     <React.Fragment>
       <div className="section-title">{post.title?.replace('Share:', '')}</div>

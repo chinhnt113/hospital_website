@@ -9,6 +9,7 @@ import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./components/routing/ProtectedRoute";
 import Majority from "./views/content/Majority";
 import PostDetail from "./views/PostDetail";
+import Doctors from "./views/Doctors";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           </Route>
           <Route exact path="/majority/:majority" element={<Majority />} />
           <Route path="/post/:majority/:title" element={<PostDetail />}/>
+          <Route exact path="/doctors" element={<Doctors />} />
+        {/* <Route path="/doctors/:id" element={DoctorDetails} /> */}
         </Routes>
       </Router>
     </AuthContextProvider>

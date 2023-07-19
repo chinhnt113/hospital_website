@@ -2,7 +2,7 @@ import BookingModal from "./bookingModal";
 
 const ContainerAchieve = () => {
     return (
-        <section className="container-achieve">
+      <section className="container-achieve">
         <div className="achieve-info">
           Bệnh viện Đa khoa Bách khoa (BKHos) là một trong những bệnh viện hàng
           đầu Việt Nam. Với đội ngũ chuyên gia, cơ sở vật chất hàng đầu, chúng
