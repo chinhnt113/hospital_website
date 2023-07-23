@@ -113,6 +113,31 @@ router.get("/admin", verifyToken, async (req, res) => {
   }
 });
 
+router.get("/my-schedule", verifyToken, async (req, res) => {
+  try {
+    const schedules = await Schedule
+      .find({ user: req.userId })
+      .populate("userId", "username")
+      .populate("doctorId", "doctorname");
+
+    const currentDate = new Date();
+    const updatedSchedules = schedules.map((schedule) => {
+      const examDate = new Date(
+        schedule.yearOfExam,
+        schedule.monthOfExam - 1,
+        schedule.dayOfExam
+      );
+      schedule.status = schedule.status !== 'closed' && examDate < currentDate ? "expired" : schedule.status;
+      return schedule;
+    });
+
+    res.json({ success: true, schedules: updatedSchedules });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 router.get("/admin/by-doctor/:doctorId", verifyToken, async (req, res) => {
   try {
     const { doctorId } = req.params;
@@ -153,5 +178,42 @@ router.put("/admin/:scheduleId", verifyToken, async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+router.put("/:id", verifyToken, async (req, res) => {
+  const { status } = req.body;
+
+  // Simple validation
+  if (status !== 'closed')
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid status" });
+
+  try {
+    let schedule = await Schedule.findById(req.params.id);
+    if (!schedule)
+      return res
+        .status(400)
+        .json({ success: false, message: "Schedule not found" });
+
+    if (schedule.userId.toString() !== req.userId)
+      return res
+        .status(401)
+        .json({ success: false, message: "Unauthorized" });
+
+    if (new Date(schedule.date) < Date.now())
+      return res
+        .status(400)
+        .json({ success: false, message: "Schedule is already past" });
+
+    schedule.status = status;
+    await schedule.save();
+
+    res.json({ success: true, message: "Schedule updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 
 module.exports = router;

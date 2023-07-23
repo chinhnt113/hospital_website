@@ -115,6 +115,39 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// @route PUT api/auth
+// @desc Update user info
+// @access Private
+router.put("/", verifyToken, async (req, res) => {
+  const { email, password } = req.body;
+
+  // Simple validation
+  if (!email || !password)
+    return res
+      .status(400)
+      .json({ success: false, message: "Missing email and/or password" });
+
+  try {
+    let user = await User.findById(req.userId).select("-password");
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+
+    // All good
+    user.email = email;
+    const hashedPassword = await argon2.hash(password);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ success: true, message: "User updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+
 router.get("/", (req, res) => res.send("USER ROUTE"));
 
 module.exports = router;

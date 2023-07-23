@@ -37,11 +37,11 @@ const PostList = () => {
         console.error(error);
       }
     };
-    if (keyword.trim() !== '') {
-      setLoading(true);
+    setLoading(true);
+    if (location.pathname !== '/search' || keyword.trim() !== '') {
       fetchData();
-      setLoading(false);
     }
+    setLoading(false);
   }, [majority, currentPage, keyword]);
 
   const handlePageChange = (page) => {
