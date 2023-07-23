@@ -24,6 +24,7 @@ function App() {
           </Route>
           <Route exact path="/majority/:majority" element={<Majority />} />
           <Route path="/post/:majority/:title" element={<PostDetail />}/>
+          <Route exact path="/search" element={<Majority />} />
           <Route exact path="/doctors" element={<Doctors />} />
         {/* <Route path="/doctors/:id" element={DoctorDetails} /> */}
         </Routes>

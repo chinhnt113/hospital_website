@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require('mongoose-regex-search');
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema(
@@ -25,5 +26,7 @@ const PostSchema = new Schema(
   },
   { timestamps: true }
 );
+
+PostSchema.plugin(require('mongoose-regex-search'));
 
 module.exports = mongoose.model("posts", PostSchema);

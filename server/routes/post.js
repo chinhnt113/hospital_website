@@ -51,7 +51,6 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-
 // @route GET api/posts
 // @desc Read post
 // @access Public
@@ -92,7 +91,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
 router.get("/find-post", async (req, res) => {
   const { url_title } = req.query;
   try {
@@ -103,6 +101,12 @@ router.get("/find-post", async (req, res) => {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
+});
+
+router.get('/search', async (req, res) => {
+  const keyword = req.query.keyword;
+  const posts = await Post.find({ title: { $regex: keyword, $options: 'i' } });
+  res.json({ success: true, posts });
 });
 
 // @route PUT api/posts

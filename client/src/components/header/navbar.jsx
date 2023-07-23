@@ -1,7 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Input, Button } from 'antd';
 import { majorityList } from "../../assets/common/commonConstants";
+import React, { useState } from 'react';
 
 export const MainNavbar = () => {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState('');
+
+  const handleSearch = () => {
+    navigate(`/search?keyword=${keyword}`);
+  };
+
   return (
     <div className="nav-container">
       <div className="navbar">
@@ -53,14 +62,10 @@ export const MainNavbar = () => {
             </ul>
           </li>
           <li className="nav-item">
-            Khác <i className="fa-solid fa-chevron-right"></i>
-            <ul className="dropdown-menu">
-              <li className="menu-item">Giới thiệu</li>
-              <li className="menu-item">Tin tức</li>
-              <li className="menu-item">Tra cứu</li>
-              <li className="menu-item">Thông tin Dược</li>
-              <li className="menu-item">Tuyển dụng</li>
-            </ul>
+            <Input type="text" value={keyword} onChange={e => setKeyword(e.target.value)} bordered={false} placeholder="Tìm kiếm bài viết" />
+            <Button type="text" onClick={handleSearch}>
+              <i className="fa-solid fa-search navbar-search-icon"></i>
+            </Button>
           </li>
         </ul>
       </div>
