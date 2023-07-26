@@ -119,28 +119,29 @@ router.post("/login", async (req, res) => {
 // @desc Update user info
 // @access Private
 router.put("/", verifyToken, async (req, res) => {
-  const { email, password } = req.body;
-
-  // Simple validation
-  if (!email || !password)
-    return res
-      .status(400)
-      .json({ success: false, message: "Missing email and/or password" });
+  const { email, password, oldPassword } = req.body;
 
   try {
-    let user = await User.findById(req.userId).select("-password");
+    let user = await User.findById(req.userId);
     if (!user)
       return res
         .status(400)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "Không tìm thấy người dùng" });
 
     // All good
-    user.email = email;
-    const hashedPassword = await argon2.hash(password);
-    user.password = hashedPassword;
+    if (email) user.email = email;
+    if (password) {
+      const passwordValid = await argon2.verify(user.password, oldPassword);
+      if (!passwordValid)
+        return res
+          .status(400)
+          .json({ success: false, message: "Mật khẩu không đúng" });
+      const hashedPassword = await argon2.hash(password);
+      user.password = hashedPassword;
+    }
     await user.save();
 
-    res.json({ success: true, message: "User updated successfully" });
+    res.json({ success: true, message: "Cập nhật thông tin thành công" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });

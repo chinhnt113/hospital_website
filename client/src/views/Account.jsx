@@ -40,6 +40,8 @@ const Account = () => {
 
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
   const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
@@ -60,32 +62,39 @@ const Account = () => {
 
   const handleUpdateEmail = async () => {
     try {
-      await axios.put(`${API_URL}/auth/update-email`, { email });
-      message.success('Email updated successfully');
+      await axios.put(`${API_URL}/auth/`, { email });
+      message.success('Cập nhật email thành công');
     } catch (error) {
       console.error(error);
-      message.error('Failed to update email');
+      message.error('Có lỗi xảy ra');
     }
   };
 
   const handleUpdatePassword = async () => {
+    if (retypePassword !== password) {
+      message.error("Nhập lại mật khẩu chưa đúng");
+      return;
+    } else if (!oldPassword) {
+      message.error("Vui lòng nhập mật khẩu hiện tại");
+      return;
+    }
     try {
-      await axios.put(`${API_URL}/auth/update-password`, { password });
-      message.success('Password updated successfully');
+      await axios.put(`${API_URL}/auth/`, { password, oldPassword });
+      message.success('Cập nhật mật khẩu thành công');
     } catch (error) {
       console.error(error);
-      message.error('Failed to update password');
+      message.error('Có lỗi xảy ra');
     }
   };
 
   const handleCancelSchedule = async (scheduleId) => {
     try {
       await axios.put(`${API_URL}/schedule/${scheduleId}`, { status: 'closed' });
-      message.success('Schedule cancelled successfully');
+      message.success('Hủy lịch khám thành công');
       setSchedules(schedules.map(schedule => schedule._id === scheduleId ? { ...schedule, status: 'closed' } : schedule));
     } catch (error) {
       console.error(error);
-      message.error('Failed to cancel schedule');
+      message.error('Có lỗi xảy ra');
     }
   };
 
@@ -127,9 +136,15 @@ const Account = () => {
                 <Input value={email} onChange={e => setEmail(e.target.value)} />
                 <Button onClick={handleUpdateEmail}>Update Email</Button>
               </Form.Item>
-              <Form.Item label="Password">
+              <Form.Item label="Nhập mật khẩu mới">
                 <Input.Password value={password} onChange={e => setPassword(e.target.value)} />
-                <Button onClick={handleUpdatePassword}>Update Password</Button>
+              </Form.Item>
+              <Form.Item label="Nhập lại mật khẩu mới">
+                <Input.Password value={retypePassword} onChange={e => setRetypePassword(e.target.value)} />
+              </Form.Item>
+              <Form.Item label="Nhập mật khẩu hiện tại">
+                <Input.Password value={oldPassword} onChange={e => setOldPassword(e.target.value)} />
+                <Button onClick={handleUpdatePassword}>Cập nhật mật khẩu</Button>
               </Form.Item>
             </Form>
           </div>
