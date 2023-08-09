@@ -4,6 +4,8 @@ import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 import { API_URL } from '../contexts/constants';
 import moment from 'moment';
+import Footer from "../components/footer";
+import Header from "../components/header";
 
 const timeRanges = [
   { value: 1, label: '08:00 - 08:20' },
@@ -124,7 +126,8 @@ const Account = () => {
 
   return (
     <div>
-      <section>
+      <Header />
+      <section style={{ marginTop: "160px"}}>
         <div>
           <h2>Xin chào, {user.username}</h2>
           <Button onClick={logout}>Đăng xuất</Button>
@@ -153,6 +156,7 @@ const Account = () => {
           <Table dataSource={schedules} columns={columns} rowKey="_id" />
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

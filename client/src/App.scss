@@ -86,9 +86,38 @@ section > * {
 }
 
 .auth-left {
-  background: var(--main);
+  background: var(--bgcolor2);
   flex: 30%;
   padding: 20px;
+  max-width: 300px;
+  align-items: center;
+  justify-content: center;
+
+  .header-logo {
+    margin-bottom: 20px;
+
+    img {
+      width: 100%;
+    }
+  }
+  .name-benhvien {
+    font-weight: 700;
+    .name-vn {
+      color: var(--dark);
+      font-size: 24px;
+    }
+    .name-en {
+      color: var(--dark-light);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+    .name-slogan {
+      color: var(--main);
+      font-weight: 600;
+      font-style: italic;
+      margin-top: 4px;
+    }
+  }
 }
 .auth-right {
   padding: 20px 0;

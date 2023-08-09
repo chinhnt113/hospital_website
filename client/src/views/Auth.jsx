@@ -44,7 +44,16 @@ const Auth = ({ authRoute }) => {
     <div className="auth-page">
       <div className="auth-form-wrapper">
         <div className="auth-left">
-          BKHos logo/ banner dọc
+          <div className="header-logo">
+            <img src={require("../assets/logo.png")} alt="logo" />
+          </div>
+          <div className="name-benhvien">
+            <div className="name-vn">Bệnh viện Đa khoa Bách khoa</div>
+            <div className="name-en">
+              SCIENCE AND TECHNOLOGY MEDICAL HOSPITAL
+            </div>
+            <div className="name-slogan">Hãy để chúng tôi chăm sóc bạn</div>
+          </div>
         </div>
         <div className="auth-right">
           {body}
